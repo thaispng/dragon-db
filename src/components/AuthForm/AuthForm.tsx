@@ -3,7 +3,7 @@
 import type React from "react"
 import { Button } from "../Button/button"
 import { Input } from "../Input/input"
-import "./Login.css"
+import "./Auth.css"
 import { Link } from "react-router-dom"
 
 interface AuthFormProps {
