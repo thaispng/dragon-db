@@ -1,18 +1,21 @@
-import React from 'react';
-import './assets/styles/global.css';
-import { DragonsListPage } from './features/dragons/pages/DragonsListPage'; // Importando o DragonsListPage
-import { ThemeToggle } from './components/ThemeToggle';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import LoginPage from "./features/pages/login"
+import RegisterPage from "./features/pages/register"
+import {DragonsListPage} from "./features/pages/dragonsListPage"
+import {ForgotPassword} from "./components/ForgotPassword/ForgotPassword"
 
 function App() {
   return (
-    <div className="App">
-      <>
-      <ThemeToggle />
-      <DragonsListPage />
-      
-      </>
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/dragonsListPage" element={<DragonsListPage/>} />
+        <Route path="/forgotPassword" element={<ForgotPassword/>} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App
