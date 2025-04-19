@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import "./Input.css"
+import "./input.css"
 
 export type InputVariant = "default" | "error" | "success"
 export type InputSize = "small" | "medium" | "large"
