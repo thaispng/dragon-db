@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Loader2 } from 'lucide-react'
-import "./Button.css"
+import "./button.css"
 
 export type ButtonVariant = "default" | "primary" | "secondary" | "danger" | "outline" | "ghost" | "link" | "success"
 export type ButtonSize = "small" | "medium" | "large" | "icon"
