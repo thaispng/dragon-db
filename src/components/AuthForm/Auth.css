@@ -1,0 +1,233 @@
+.login-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f3f4f6;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .login-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-card-content {
+    display: grid;
+    padding: 0;
+  }
+  
+  @media (min-width: 768px) {
+    .login-card-content {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  .login-form {
+    padding: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .login-form {
+      padding: 2rem;
+    }
+  }
+  
+  .login-form-inner {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-header {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+.login-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+  
+  .login-subtitle {
+    color: #6b7280;
+    margin: 0.5rem 0 0 0;
+  }
+  
+  .form-group {
+    display: grid;
+    gap: 0.5rem;
+  }
+  
+  .form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .password-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .forgot-password {
+    font-size: 0.875rem;
+    text-decoration: none;
+    margin-left: auto;
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  
+  .form-input {
+    font-size: 0.875rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    width: 100%;
+  }
+  
+  .login-button {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .login-button:hover {
+    background-color: #333;
+  }
+  
+  .divider {
+    position: relative;
+    text-align: center;
+    font-size: 0.875rem;
+    margin: 1rem 0;
+  }
+  
+  .divider::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    top: 50%;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  .divider-text {
+    position: relative;
+    z-index: 10;
+    background-color: white;
+    padding: 0 0.5rem;
+    color: #6b7280;
+  }
+  
+  .social-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  
+  .social-button {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: transparent;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .social-button svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  .signup-prompt {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+  }
+  
+  .signup-link {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  
+  .login-image-container {
+    position: relative;
+    display: none;
+    background-color: #f3f4f6;
+  }
+  
+  @media (min-width: 768px) {
+    .login-image-container {
+      display: block;
+    }
+  }
+  
+  .login-image-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .terms-text {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+  
+  .terms-text a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  
+  .terms-text a:hover {
+    color: #000;
+  }
+  
