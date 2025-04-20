@@ -1,0 +1,169 @@
+.delete-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 4px;
+  color: var(--text-light);
+  transition: all 0.2s ease;
+}
+
+.delete-button:hover {
+  color: var(--color-extraordinary-text);
+  background-color: var(--color-extraordinary);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-container {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 16px;
+  animation: slideIn 0.3s ease;
+}
+
+.modal-content {
+  background-color: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px var(--shadow-color), 0 10px 10px -5px var(--shadow-color);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background-color: var(--hover-color);
+  color: var(--text-color);
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-description {
+  color: var(--text-light);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.modal-button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.modal-button.cancel {
+  background-color: var(--card-background);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.modal-button.cancel:hover {
+  background-color: var(--hover-color);
+}
+
+.modal-button.delete {
+  background-color: var(--color-extraordinary-text);
+  color: white;
+  border: 1px solid var(--color-extraordinary-text);
+}
+
+.modal-button.delete:hover {
+  background-color: var(--color-extraordinary-text);
+  filter: brightness(90%);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--color-extraordinary);
+  margin: 0 auto 16px;
+}
+
+.modal-icon svg {
+  color: var(--color-extraordinary-text);
+}
+
+.item-name {
+  font-weight: 600;
+  color: var(--text-color);
+}
