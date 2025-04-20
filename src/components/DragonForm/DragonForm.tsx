@@ -1,0 +1,151 @@
+"use client"
+
+import type React from "react"
+import { useState } from "react"
+import { Input } from "../Input/input"
+import { Button } from "../Button/button"
+import { Flame, Shield, BookOpen, RefreshCw, Plus } from "lucide-react"
+import Card from "../Card/card"
+import "./dragon-form.css"
+
+interface DragonData {
+  name: string
+  type: string
+  histories: string[]
+}
+
+export function DragonForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [dragonData, setDragonData] = useState<DragonData>({
+    name: "",
+    type: "",
+    histories: [],
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setDragonData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    // Aqui você adicionaria a lógica para enviar os dados
+    // Os campos createdAt e id seriam gerados automaticamente no backend
+    const newDragon = {
+      ...dragonData,
+      createdAt: new Date().toISOString(),
+      id: Math.floor(Math.random() * 1000).toString(),
+    }
+
+    console.log("Novo dragão:", newDragon)
+
+    // Simulando envio do formulário
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+
+    setIsSubmitting(false)
+    setDragonData({
+      name: "",
+      type: "",
+      histories: [],
+    })
+  }
+
+  return (
+    <div className="dragon-form-wrapper">
+      <div className="dragon-form-header">
+        <div>
+          <h2 className="dragon-form-title">Adicionar Novo Dragão</h2>
+          <p className="dragon-form-subtitle">Preencha os detalhes do seu dragão lendário</p>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="dragon-form">
+        <div className="dragon-form-sections">
+          <Card
+            title="Identidade do Dragão"
+            icon={<Shield className="section-icon" />}
+            variant="outlined"
+            size="medium"
+            className="dragon-section-card"
+          >
+            <div className="input-group">
+              <Input
+                name="name"
+                label="Nome do Dragão"
+                placeholder="Ex: Logan, o Terrível"
+                value={dragonData.name}
+                onChange={handleChange}
+                required
+                inputSize="medium"
+                fullWidth
+                className="dragon-input"
+              />
+
+              <Input
+                name="type"
+                label="Tipo do Dragão"
+                placeholder="Ex: Dragão de Fogo, Dragão Aquático"
+                value={dragonData.type}
+                onChange={handleChange}
+                required
+                inputSize="medium"
+                fullWidth
+                className="dragon-input"
+              />
+            </div>
+          </Card>
+
+          <Card
+            title="Lendas e Histórias"
+            icon={<BookOpen className="section-icon" />}
+            variant="outlined"
+            size="medium"
+            className="dragon-section-card"
+          >
+            <Input
+              name="histories"
+              label="Histórias do Dragão"
+              placeholder="Ex: Guardião das montanhas, Protetor do tesouro antigo"
+              value={dragonData.histories.join(", ")}
+              onChange={(e) => {
+                const histories = e.target.value.split(",").map((h) => h.trim())
+                setDragonData((prev) => ({
+                  ...prev,
+                  histories,
+                }))
+              }}
+              required
+              inputSize="medium"
+              fullWidth
+              className="dragon-input"
+            />
+          </Card>
+        </div>
+
+        <div className="dragon-form-actions">
+          <Button
+            type="button"
+            variant="outline"
+            className="reset-button"
+            onClick={() => setDragonData({ name: "", type: "", histories: [] })}
+          >
+            cancelar
+          </Button>
+          <Button
+            type="submit"
+            variant="primary"
+            isLoading={isSubmitting}
+            className="submit-button"
+          >
+            {isSubmitting ? "Adicionando..." : "Salvar"}
+          </Button>
+        </div>
+      </form>
+    </div>
+  )
+}
