@@ -1,77 +1,101 @@
-/* Variáveis de cores */
 :root {
-  --color-fire-light: #fff1f1;
-  --color-fire-medium: #ffcaca;
-  --color-fire-dark: #e86a6a;
-  --color-fire-text: #c53030;
+  --color-essential: #e6f2eb;
+  --color-essential-text: #1e7c50;
+  --color-essential-border: #c3e6d3;
 
-  --color-ice-light: #f0f9ff;
-  --color-ice-medium: #bae6fd;
-  --color-ice-dark: #38bdf8;
-  --color-ice-text: #0369a1;
+  --color-elevated: #e6f3fa;
+  --color-elevated-text: #0369a1;
+  --color-elevated-border: #c2e5f8;
 
-  --color-earth-light: #fef9e7;
-  --color-earth-medium: #fde68a;
-  --color-earth-dark: #d97706;
-  --color-earth-text: #92400e;
+  --color-extraordinary: #fde8e8;
+  --color-extraordinary-text: #e53e3e;
+  --color-extraordinary-border: #fbd5d5;
 
-  --color-lightning-light: #fefce8;
-  --color-lightning-medium: #fef08a;
-  --color-lightning-dark: #eab308;
-  --color-lightning-text: #854d0e;
+  --color-exceptional: #fef6db;
+  --color-exceptional-text: #d97706;
+  --color-exceptional-border: #fde68a;
 
-  --color-wind-light: #f0f9ff;
-  --color-wind-medium: #bae6fd;
-  --color-wind-dark: #0ea5e9;
-  --color-wind-text: #0369a1;
-
-  --color-default-light: #fff1f1;
-  --color-default-medium: #ffcaca;
-  --color-default-dark: #e86a6a;
-  --color-default-text: #c53030;
-
-  --color-background: #ffffff;
-  --color-text: #333333;
-  --color-text-light: #666666;
-  --color-border: #e5e5e5;
-  --color-shadow: rgba(0, 0, 0, 0.1);
+  --background-color: #f5f5f7;
+  --card-background: #ffffff;
+  --text-color: #333333;
+  --text-light: #666666;
+  --text-muted: #8c8c8c;
+  --border-color: #eaeaea;
+  --shadow-color: rgba(0, 0, 0, 0.05);
+  --hover-color: #f9f9f9;
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --table-header-color: #6b7280;
+  --checkbox-color: #4f46e5;
+  --link-color: #4f46e5;
 }
 
-/* Estilos gerais */
+[data-theme="dark"] {
+  --background-color: #121212;
+  --card-background: #1e1e1e;
+  --text-color: #f0f0f0;
+  --text-light: #b0b0b0;
+  --text-muted: #8c8c8c;
+  --border-color: #2e2e2e;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --hover-color: #252525;
+  --primary-color: #6366f1;
+  --primary-hover: #818cf8;
+  --table-header-color: #9ca3af;
+  --checkbox-color: #6366f1;
+  --link-color: #818cf8;
+
+  --color-essential: rgba(30, 124, 80, 0.2);
+  --color-essential-text: #34d399;
+  --color-essential-border: rgba(52, 211, 153, 0.3);
+
+  --color-elevated: rgba(3, 105, 161, 0.2);
+  --color-elevated-text: #38bdf8;
+  --color-elevated-border: rgba(56, 189, 248, 0.3);
+
+  --color-extraordinary: rgba(229, 62, 62, 0.2);
+  --color-extraordinary-text: #f87171;
+  --color-extraordinary-border: rgba(248, 113, 113, 0.3);
+
+  --color-exceptional: rgba(217, 119, 6, 0.2);
+  --color-exceptional-text: #fbbf24;
+  --color-exceptional-border: rgba(251, 191, 36, 0.3);
+}
+
 .dragons-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 32px 16px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
     "Helvetica Neue", sans-serif;
-  color: var(--color-text);
+  color: var(--text-color);
+  background-color: var(--background-color);
 }
 
-/* Cabeçalho */
 .dragons-header {
-  text-align: center;
+  text-align: start;
   margin-bottom: 32px;
 }
 
 .dragons-title {
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 700;
   margin-bottom: 8px;
-  color: var(--color-fire-dark);
+  color: var(--text-color);
 }
 
 .dragons-subtitle {
-  color: var(--color-text-light);
-  max-width: 512px;
+  color: var(--text-light);
   margin: 0 auto;
   font-size: 16px;
 }
-
-/* Campo de busca */
 .search-container {
   position: relative;
-  max-width: 448px;
   margin: 0 auto 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .search-icon {
@@ -79,27 +103,25 @@
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--color-text-light);
+  color: var(--text-light);
 }
 
 .search-input {
-  width: 100%;
-  padding: 12px 16px 12px 40px;
-  border: 1px solid var(--color-fire-medium);
+  width: 400px;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
-  color: var(--color-text);
-  background-color: var(--color-background);
+  color: var(--text-color);
+  background-color: var(--card-background);
 }
 
 .search-input:focus {
-  border-color: var(--color-fire-dark);
-  box-shadow: 0 0 0 3px rgba(232, 106, 106, 0.2);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--shadow-color);
 }
 
-/* Filtros */
 .filter-container {
   display: flex;
   flex-wrap: wrap;
@@ -117,30 +139,28 @@
   font-weight: 500;
   cursor: pointer;
   border: 1px solid transparent;
-  background-color: #f5f5f5;
-  color: var(--color-text);
+  background-color: var(--card-background);
+  color: var(--text-color);
   transition: all 0.2s ease;
 }
 
 .filter-badge:hover {
-  background-color: #eeeeee;
+  background-color: var(--hover-color);
 }
 
 .filter-badge.active {
-  background-color: var(--color-fire-light);
-  border-color: var(--color-fire-medium);
-  color: var(--color-fire-text);
+  background-color: var(--primary-color);
+  color: white;
 }
 
 .filter-icon {
   margin-right: 6px;
 }
 
-/* Mensagem de nenhum resultado */
 .no-results {
   text-align: center;
   padding: 48px 0;
-  color: var(--color-text-light);
+  color: var(--text-light);
   font-size: 16px;
   display: flex;
   flex-direction: column;
@@ -151,8 +171,8 @@
 .clear-button {
   padding: 8px 16px;
   background-color: transparent;
-  border: 1px solid var(--color-fire-medium);
-  color: var(--color-fire-dark);
+  border: 1px solid var(--border-color);
+  color: var(--primary-color);
   border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
@@ -160,181 +180,303 @@
 }
 
 .clear-button:hover {
-  background-color: var(--color-fire-light);
+  background-color: var(--hover-color);
 }
 
-/* Grid de dragões */
-.dragons-grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 24px;
-}
-
-/* Media queries para responsividade */
-@media (min-width: 640px) {
-  .dragons-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 768px) {
-  .dragons-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .dragons-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* Card de dragão */
-.dragon-card {
-  display: flex;
-  flex-direction: column;
+.dragons-table-container {
+  overflow-x: auto;
   border-radius: 12px;
-  background-color: var(--color-background);
-  border: 1px solid var(--color-border);
-  overflow: hidden;
-  box-shadow: 0 4px 6px var(--color-shadow);
-  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px var(--shadow-color);
+  background-color: var(--card-background);
 }
 
-.dragon-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  border-color: var(--color-fire-medium);
+.dragons-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  background-color: var(--card-background);
 }
 
-/* Cabeçalho do card */
-.dragon-header {
+.dragons-table thead {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dragons-table th {
   padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.dragon-name {
-  font-size: 18px;
-  font-weight: 700;
-  margin: 0;
-  color: var(--color-fire-dark);
-  flex: 1;
-}
-
-/* Badge de tipo */
-.dragon-type-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 16px;
+  font-weight: 600;
   font-size: 12px;
-  font-weight: 500;
-  margin-left: 8px;
+  color: var(--table-header-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
-.dragon-type-icon {
-  margin-right: 4px;
+.dragons-table tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease;
 }
 
-/* Conteúdo do card */
-.dragon-content {
-  padding: 20px 16px;
+.dragons-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.dragons-table tbody tr:hover {
+  background-color: var(--hover-color);
+}
+
+.dragons-table td {
+  padding: 16px;
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+.name-column {
+  min-width: 200px;
+}
+
+.dragon-name-with-avatar {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  flex: 1;
+  gap: 12px;
 }
 
-.dragon-symbol {
-  width: 80px;
-  height: 80px;
+.dragon-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--hover-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  margin-bottom: 16px;
-  font-size: 32px;
+  overflow: hidden;
 }
 
-.dragon-description {
-  text-align: center;
-  color: var(--color-text-light);
-  font-size: 14px;
-  margin: 0;
+.avatar-icon {
+  font-size: 18px;
 }
 
-/* Rodapé do card */
-.dragon-footer {
-  padding: 12px 16px;
-  border-top: 1px solid var(--color-border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.dragon-name {
+  font-weight: 500;
+  color: var(--text-color);
 }
 
-.dragon-id {
-  font-size: 12px;
-  color: var(--color-text-light);
+.dragon-element {
+  color: var(--text-color);
 }
 
-.details-button {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  background-color: transparent;
-  border: 1px solid var(--color-fire-medium);
-  color: var(--color-fire-dark);
-  border-radius: 6px;
+.dragon-date {
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.dragon-tier {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
   font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tier-essential {
+  background-color: var(--color-essential);
+  color: var(--color-essential-text);
+  border: 1px solid var(--color-essential-border);
+}
+
+.tier-elevated {
+  background-color: var(--color-elevated);
+  color: var(--color-elevated-text);
+  border: 1px solid var(--color-elevated-border);
+}
+
+.tier-extraordinary {
+  background-color: var(--color-extraordinary);
+  color: var(--color-extraordinary-text);
+  border: 1px solid var(--color-extraordinary-border);
+}
+
+.tier-exceptional {
+  background-color: var(--color-exceptional);
+  color: var(--color-exceptional-text);
+  border: 1px solid var(--color-exceptional-border);
+}
+
+.dragon-origin {
+  color: var(--text-light);
+}
+
+.dragon-id-link {
+  color: var(--link-color);
+  text-decoration: none;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.dragon-id-link:hover {
+  text-decoration: underline;
+}
+
+.selected-column {
+  width: 80px;
+  text-align: center;
+}
+
+.checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 25px;
   cursor: pointer;
+  user-select: none;
+  margin: 0 auto;
+  width: 20px;
+  height: 20px;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: var(--card-background);
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
   transition: all 0.2s ease;
 }
 
-.details-button:hover {
-  background-color: var(--color-fire-light);
+.checkbox-container:hover input ~ .checkmark {
+  border-color: var(--primary-color);
 }
 
-.details-icon {
-  margin-right: 6px;
-  font-size: 14px;
+.checkbox-container input:checked ~ .checkmark {
+  background-color: var(--checkbox-color);
+  border-color: var(--checkbox-color);
 }
 
-/* Cores dos badges e símbolos por tipo */
-.badge-fire {
-  background-color: var(--color-fire-light);
-  color: var(--color-fire-text);
-  border: 1px solid var(--color-fire-medium);
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
 }
 
-.badge-ice {
-  background-color: var(--color-ice-light);
-  color: var(--color-ice-text);
-  border: 1px solid var(--color-ice-medium);
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
 }
 
-.badge-earth {
-  background-color: var(--color-earth-light);
-  color: var(--color-earth-text);
-  border: 1px solid var(--color-earth-medium);
+.checkbox-container .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
-.badge-lightning {
-  background-color: var(--color-lightning-light);
-  color: var(--color-lightning-text);
-  border: 1px solid var(--color-lightning-medium);
+@media (max-width: 768px) {
+  .dragons-table th,
+  .dragons-table td {
+    padding: 12px 8px;
+  }
+
+  .dragon-avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .avatar-icon {
+    font-size: 16px;
+  }
 }
 
-.badge-wind {
-  background-color: var(--color-wind-light);
-  color: var(--color-wind-text);
-  border: 1px solid var(--color-wind-medium);
+@media (max-width: 576px) {
+  .dragons-table {
+    font-size: 13px;
+  }
+
+  .dragon-tier {
+    padding: 2px 8px;
+    font-size: 11px;
+  }
+
+  .dragon-name-with-avatar {
+    gap: 8px;
+  }
 }
 
-.badge-default {
-  background-color: var(--color-fire-light);
-  color: var(--color-fire-text);
-  border: 1px solid var(--color-fire-medium);
+
+.pagination-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination-numbers {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pagination-button {
+  min-width: 32px !important;
+  width: 32px !important;
+  padding: 0 !important;
+}
+
+.pagination-nav-button {
+  min-width: 90px !important;
+}
+
+.pagination-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  color: var(--muted-foreground, #64748b);
+}
+
+.pagination-info {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--muted-foreground, #64748b);
+}
+
+@media (min-width: 768px) {
+  .pagination-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .pagination-info {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .pagination-nav-button {
+    min-width: auto !important;
+  }
+
+  .pagination-nav-button .button__text {
+    display: none;
+  }
 }
