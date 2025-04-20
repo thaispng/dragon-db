@@ -9,7 +9,6 @@ export function DragonsListPage() {
 
   return (
     <div>
-      <h1>Lista de Dragões</h1>
       {dragons && <DragonsList dragons={dragons} />}
     </div>
   );
