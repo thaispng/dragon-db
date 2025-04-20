@@ -15,7 +15,6 @@
 }
 
 .button:focus {
-  /* Adaptado para usar a variável de sombra do tema */
   box-shadow: 0 0 0 3px var(--shadow-color);
 }
 
@@ -49,7 +48,6 @@
   border-radius: 4px;
 }
 
-/* Mantendo as cores originais para todos os tipos de botões */
 .button--default {
   background-color: #f5a5a5;
   color: #4a2c2c;
@@ -93,7 +91,6 @@
 }
 
 .button--outline:hover:not(:disabled) {
-  /* Adaptado para usar a variável de hover do tema */
   background-color: var(--hover-color);
 }
 
@@ -103,7 +100,6 @@
 }
 
 .button--ghost:hover:not(:disabled) {
-  /* Adaptado para usar a variável de hover do tema */
   background-color: var(--hover-color);
 }
 
