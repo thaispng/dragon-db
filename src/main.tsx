@@ -5,6 +5,7 @@ import "./assets/styles/reset.css"
 import App from "./App"
 import reportWebVitals from "./lib/reportWebVitals"
 import { ThemeProvider } from "./context/ThemeContext"
+import { ToastProvider } from "./components/Toast/toast-provider"
 import "./assets/styles/theme.css"
 
 const queryClient = new QueryClient()
@@ -14,7 +15,9 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <App />
+        <ToastProvider>
+          <App />
+        </ToastProvider>
       </ThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>,
