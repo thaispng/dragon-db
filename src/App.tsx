@@ -3,6 +3,7 @@ import LoginPage from "./features/pages/login"
 import RegisterPage from "./features/pages/register"
 import {DragonsListPage} from "./features/pages/dragonsListPage"
 import {ForgotPassword} from "./components/ForgotPassword/ForgotPassword"
+import {CreateDragonPage} from "./features/pages/createDragonPage"
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/dragonsListPage" element={<DragonsListPage/>} />
         <Route path="/forgotPassword" element={<ForgotPassword/>} />
+        <Route path="*" element={<CreateDragonPage/>} />
       </Routes>
     </BrowserRouter>
   )
