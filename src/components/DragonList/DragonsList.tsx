@@ -1,97 +1,121 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import "./dragons-list.css"
-import { ThemeToggle } from "../ThemeToggle"
-import { Input } from "../Input/input"
-import { Button } from "../Button/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useState } from "react";
+import "./dragons-list.css";
+import { ThemeToggle } from "../ThemeToggle";
+import { Input } from "../Input/input";
+import { Button } from "../Button/button";
+import { ChevronLeft, ChevronRight, Pen } from "lucide-react";
+import { DeleteModalPure } from "../DeleteModal/delete-modal-pure";
 
 interface Dragon {
-  id: string
-  name: string
-  type: string
+  id: string;
+  name: string;
+  type: string;
+  histories: string[];
+  ImageUrl: string;
 }
 
 interface DragonsListProps {
-  dragons: Dragon[]
+  dragons: Dragon[];
+  onDeleteDragon?: (id: string) => void;
 }
 
-export function DragonsList({ dragons }: DragonsListProps) {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [activeFilter, setActiveFilter] = useState<string | null>(null)
-  const [selectedDragons, setSelectedDragons] = useState<string[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 8
+export function DragonsList({ dragons, onDeleteDragon }: DragonsListProps) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [selectedDragons, setSelectedDragons] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const filteredDragons = dragons.filter((dragon) => {
     const matchesSearch =
       dragon.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      dragon.type.toLowerCase().includes(searchTerm.toLowerCase())
+      dragon.type.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesFilter = !activeFilter || dragon.type.toLowerCase() === activeFilter.toLowerCase()
+    const matchesFilter =
+      !activeFilter || dragon.type.toLowerCase() === activeFilter.toLowerCase();
 
-    return matchesSearch && matchesFilter
-  })
+    return matchesSearch && matchesFilter;
+  });
 
-  const totalPages = Math.ceil(filteredDragons.length / itemsPerPage)
+  const totalPages = Math.ceil(filteredDragons.length / itemsPerPage);
 
-  const currentDragons = filteredDragons.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+  const currentDragons = filteredDragons.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const getTypeClass = (type: string) => {
     switch (type.toLowerCase()) {
       case "fire":
       case "fogo":
-        return "tier-extraordinary"
+        return "tier-extraordinary";
       case "ice":
       case "gelo":
-        return "tier-elevated"
+        return "tier-elevated";
       case "earth":
       case "terra":
-        return "tier-essential"
+        return "tier-essential";
       case "lightning":
       case "relâmpago":
       case "electric":
-        return "tier-exceptional"
+        return "tier-exceptional";
       case "wind":
       case "vento":
       case "air":
       case "ar":
-        return "tier-elevated"
+        return "tier-elevated";
       default:
-        return "tier-essential"
+        return "tier-essential";
     }
-  }
+  };
 
   const toggleDragonSelection = (id: string) => {
-    setSelectedDragons((prev) => (prev.includes(id) ? prev.filter((dragonId) => dragonId !== id) : [...prev, id]))
-  }
+    setSelectedDragons((prev) =>
+      prev.includes(id)
+        ? prev.filter((dragonId) => dragonId !== id)
+        : [...prev, id]
+    );
+  };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
+    setCurrentPage(page);
+  };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
+      setCurrentPage(currentPage - 1);
     }
-  }
+  };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
+      setCurrentPage(currentPage + 1);
     }
-  }
+  };
+
+  const handleDeleteDragon = (id: string) => {
+    if (onDeleteDragon) {
+      onDeleteDragon(id);
+    } else {
+      console.log(`Deletando dragão com ID: ${id}`);
+    }
+    // Remover o dragão da lista de selecionados se estiver lá
+    if (selectedDragons.includes(id)) {
+      setSelectedDragons(selectedDragons.filter((dragonId) => dragonId !== id));
+    }
+  };
 
   const renderPageNumbers = () => {
-    const pageNumbers = []
+    const pageNumbers = [];
 
-    const maxVisiblePages = 5
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2))
-    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1)
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
     if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1)
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
 
     if (startPage > 1) {
@@ -104,15 +128,15 @@ export function DragonsList({ dragons }: DragonsListProps) {
           className="pagination-button"
         >
           1
-        </Button>,
-      )
+        </Button>
+      );
 
       if (startPage > 2) {
         pageNumbers.push(
           <span key="ellipsis-start" className="pagination-ellipsis">
             ...
-          </span>,
-        )
+          </span>
+        );
       }
     }
 
@@ -126,8 +150,8 @@ export function DragonsList({ dragons }: DragonsListProps) {
           className="pagination-button"
         >
           {i}
-        </Button>,
-      )
+        </Button>
+      );
     }
 
     if (endPage < totalPages) {
@@ -135,8 +159,8 @@ export function DragonsList({ dragons }: DragonsListProps) {
         pageNumbers.push(
           <span key="ellipsis-end" className="pagination-ellipsis">
             ...
-          </span>,
-        )
+          </span>
+        );
       }
 
       pageNumbers.push(
@@ -148,21 +172,24 @@ export function DragonsList({ dragons }: DragonsListProps) {
           className="pagination-button"
         >
           {totalPages}
-        </Button>,
-      )
+        </Button>
+      );
     }
 
-    return pageNumbers
-  }
+    return pageNumbers;
+  };
 
   return (
     <div className="dragons-container">
-      <div className="dragons-header">
+      <div className="dragons-header-container">
+        <div className="dragons-header">
+          <h1 className="dragons-title">Coleção de Dragões</h1>
+          <p className="dragons-subtitle">
+            Explore nossa coleção de dragões lendários de diferentes tipos e
+            habilidades.
+          </p>
+        </div>
         <ThemeToggle />
-        <h1 className="dragons-title">Coleção de Dragões</h1>
-        <p className="dragons-subtitle">
-          Explore nossa coleção de dragões lendários de diferentes tipos e habilidades.
-        </p>
       </div>
 
       <div className="search-container">
@@ -182,8 +209,8 @@ export function DragonsList({ dragons }: DragonsListProps) {
           <Button
             variant="ghost"
             onClick={() => {
-              setSearchTerm("")
-              setActiveFilter(null)
+              setSearchTerm("");
+              setActiveFilter(null);
             }}
           >
             Limpar filtros
@@ -196,11 +223,12 @@ export function DragonsList({ dragons }: DragonsListProps) {
               <thead>
                 <tr>
                   <th className="selected-column"></th>
+                  <th className="avatar-column"></th>
                   <th className="name-column">NOME</th>
                   <th>ELEMENTO</th>
                   <th>DATA</th>
                   <th>TIPO</th>
-                  <th>ORIGEM</th>
+                  <th>HISTORIA</th>
                   <th>ID</th>
                 </tr>
               </thead>
@@ -217,27 +245,63 @@ export function DragonsList({ dragons }: DragonsListProps) {
                         <span className="checkmark"></span>
                       </label>
                     </td>
+                    <td className="avatar-column">
+                      {dragon.ImageUrl && (
+                        <div className="dragon-avatar">
+                          <img
+                            src={dragon.ImageUrl || "/placeholder.svg"}
+                            alt={`${dragon.name} avatar`}
+                            className="dragon-image"
+                          />
+                        </div>
+                      )}
+                    </td>
                     <td className="name-column">
-                      <div className="dragon-name-with-avatar">
-                        <span className="dragon-name">{dragon.name}</span>
-                      </div>
+                      <span className="dragon-name">{dragon.name}</span>
                     </td>
                     <td>
                       <span className="dragon-element">{dragon.type}</span>
                     </td>
                     <td>
-                      <span className="dragon-date">{new Date().toLocaleDateString("pt-BR")}</span>
-                    </td>
-                    <td>
-                      <span className={`dragon-tier ${getTypeClass(dragon.type)}`}>{dragon.type}</span>
-                    </td>
-                    <td>
-                      <span className="dragon-origin">Autosource</span>
-                    </td>
-                    <td>
-                      <span className="dragon-origin">
-                        {`dragon-${dragon.id.substring(0, 8)}`}
+                      <span className="dragon-date">
+                        {new Date().toLocaleDateString("pt-BR")}
                       </span>
+                    </td>
+                    <td>
+                      <span
+                        className={`dragon-tier ${getTypeClass(dragon.type)}`}
+                      >
+                        {dragon.type}
+                      </span>
+                    </td>
+                    <td>
+                      <span className="dragon-origin">{dragon.histories}</span>
+                    </td>
+                    <td>
+                      <span className="dragon-origin">{`dragon-${dragon.id.substring(
+                        0,
+                        8
+                      )}`}</span>
+                    </td>
+                    <td>
+                      <div className="action-buttons">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label="Editar"
+                          onClick={() =>
+                            console.log(`Edit dragon ${dragon.id}`)
+                          }
+                        >
+                          <Pen size={18} />
+                        </Button>
+                        <DeleteModalPure
+                          title="Excluir Dragão"
+                          description="Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita."
+                          itemName={dragon.name}
+                          onDelete={() => handleDeleteDragon(dragon.id)}
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -273,12 +337,17 @@ export function DragonsList({ dragons }: DragonsListProps) {
             </div>
 
             <div className="pagination-info">
-              Mostrando {Math.min(filteredDragons.length, (currentPage - 1) * itemsPerPage + 1)} -{" "}
-              {Math.min(currentPage * itemsPerPage, filteredDragons.length)} de {filteredDragons.length} dragões
+              Mostrando{" "}
+              {Math.min(
+                filteredDragons.length,
+                (currentPage - 1) * itemsPerPage + 1
+              )}{" "}
+              - {Math.min(currentPage * itemsPerPage, filteredDragons.length)}{" "}
+              de {filteredDragons.length} dragões
             </div>
           </div>
         </>
       )}
     </div>
-  )
+  );
 }
