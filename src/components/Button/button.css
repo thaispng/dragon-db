@@ -3,7 +3,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -14,7 +15,8 @@
 }
 
 .button:focus {
-  box-shadow: 0 0 0 3px rgba(232, 106, 106, 0.4); 
+  /* Adaptado para usar a variável de sombra do tema */
+  box-shadow: 0 0 0 3px var(--shadow-color);
 }
 
 .button:disabled {
@@ -47,80 +49,83 @@
   border-radius: 4px;
 }
 
+/* Mantendo as cores originais para todos os tipos de botões */
 .button--default {
-  background-color: #F5A5A5; 
-  color: #4A2C2C;
+  background-color: #f5a5a5;
+  color: #4a2c2c;
 }
 
 .button--default:hover:not(:disabled) {
-  background-color: #FF8A82; 
+  background-color: #ff8a82;
 }
 
 .button--primary {
-  background-color: #E86A6A; 
+  background-color: #e86a6a;
   color: white;
 }
 
 .button--primary:hover:not(:disabled) {
-  background-color: #FF7F7F; 
+  background-color: #ff7f7f;
 }
 
 .button--secondary {
-  background-color: #FFD663; 
-  color: #4A2C2C;
+  background-color: #ffd663;
+  color: #4a2c2c;
 }
 
 .button--secondary:hover:not(:disabled) {
-  background-color: #FFE27A; 
+  background-color: #ffe27a;
 }
 
 .button--danger {
-  background-color: #C84A31; 
+  background-color: #c84a31;
   color: white;
 }
 
 .button--danger:hover:not(:disabled) {
-  background-color: #A63E29; 
+  background-color: #a63e29;
 }
 
 .button--outline {
   background-color: transparent;
-  color: #E86A6A;
-  border: 1px solid #E86A6A;
+  color: #e86a6a;
+  border: 1px solid #e86a6a;
 }
 
 .button--outline:hover:not(:disabled) {
-  background-color: rgba(232, 106, 106, 0.1);
+  /* Adaptado para usar a variável de hover do tema */
+  background-color: var(--hover-color);
 }
 
 .button--ghost {
   background-color: transparent;
-  color: #E86A6A;
+  color: #e86a6a;
 }
 
 .button--ghost:hover:not(:disabled) {
-  background-color: rgba(232, 106, 106, 0.1);
+  /* Adaptado para usar a variável de hover do tema */
+  background-color: var(--hover-color);
 }
 
 .button--link {
   background-color: transparent;
-  color: #E86A6A;
+  color: #e86a6a;
   text-decoration: underline;
   padding: 0;
   height: auto;
 }
 
 .button--link:hover:not(:disabled) {
-  color: #FF7F7F;
+  color: #ff7f7f;
 }
 
 .button--success {
-  background-color: #6FC3DF; 
+  background-color: #6fc3df;
   color: white;
 }
 
 .button--success:hover:not(:disabled) {
-  background-color: #8FDCE6; 
+  background-color: #8fdce6;
 }
 
 .button__icon {
