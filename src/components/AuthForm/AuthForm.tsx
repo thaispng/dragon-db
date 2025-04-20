@@ -5,6 +5,7 @@ import { Button } from "../Button/button"
 import { Input } from "../Input/input"
 import "./Auth.css"
 import { Link } from "react-router-dom"
+import { ThemeToggle } from "../ThemeToggle"
 
 interface AuthFormProps {
   title: string
@@ -37,6 +38,7 @@ export function AuthForm({
           <form className="login-form" onSubmit={onSubmit}>
             <div className="login-form-inner">
               <div className="login-header">
+              <ThemeToggle  />
                 <h1 className="login-title">{title}</h1>
                 <p className="login-subtitle">{subtitle}</p>
               </div>
