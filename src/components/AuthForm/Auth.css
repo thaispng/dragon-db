@@ -95,7 +95,6 @@
 .forgot-password:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
-  color: var(--hover-color);
 }
 
 .form-input {
