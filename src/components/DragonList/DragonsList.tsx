@@ -2,6 +2,10 @@
 
 import { useState } from "react"
 import "./dragons-list.css"
+import { ThemeToggle } from "../ThemeToggle"
+import { Input } from "../Input/input"
+import { Button } from "../Button/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 interface Dragon {
   id: string
@@ -16,6 +20,9 @@ interface DragonsListProps {
 export function DragonsList({ dragons }: DragonsListProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [activeFilter, setActiveFilter] = useState<string | null>(null)
+  const [selectedDragons, setSelectedDragons] = useState<string[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 8
 
   const filteredDragons = dragons.filter((dragon) => {
     const matchesSearch =
@@ -27,61 +34,131 @@ export function DragonsList({ dragons }: DragonsListProps) {
     return matchesSearch && matchesFilter
   })
 
-  const dragonTypes = Array.from(new Set(dragons.map((dragon) => dragon.type)))
+  const totalPages = Math.ceil(filteredDragons.length / itemsPerPage)
+
+  const currentDragons = filteredDragons.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
 
   const getTypeClass = (type: string) => {
     switch (type.toLowerCase()) {
       case "fire":
       case "fogo":
-        return "badge-fire"
+        return "tier-extraordinary"
       case "ice":
       case "gelo":
-        return "badge-ice"
+        return "tier-elevated"
       case "earth":
       case "terra":
-        return "badge-earth"
+        return "tier-essential"
       case "lightning":
       case "relâmpago":
       case "electric":
-        return "badge-lightning"
+        return "tier-exceptional"
       case "wind":
       case "vento":
       case "air":
       case "ar":
-        return "badge-wind"
+        return "tier-elevated"
       default:
-        return "badge-default"
+        return "tier-essential"
     }
   }
 
-  const getTypeIcon = (type: string) => {
-    switch (type.toLowerCase()) {
-      case "fire":
-      case "fogo":
-        return "🔥"
-      case "ice":
-      case "gelo":
-        return "❄️"
-      case "earth":
-      case "terra":
-        return "🌍"
-      case "lightning":
-      case "relâmpago":
-      case "electric":
-        return "⚡"
-      case "wind":
-      case "vento":
-      case "air":
-      case "ar":
-        return "💨"
-      default:
-        return "🐉"
+  const toggleDragonSelection = (id: string) => {
+    setSelectedDragons((prev) => (prev.includes(id) ? prev.filter((dragonId) => dragonId !== id) : [...prev, id]))
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
     }
+  }
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+  const renderPageNumbers = () => {
+    const pageNumbers = []
+
+    const maxVisiblePages = 5
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2))
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1)
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1)
+    }
+
+    if (startPage > 1) {
+      pageNumbers.push(
+        <Button
+          key="first"
+          variant="outline"
+          size="small"
+          onClick={() => handlePageChange(1)}
+          className="pagination-button"
+        >
+          1
+        </Button>,
+      )
+
+      if (startPage > 2) {
+        pageNumbers.push(
+          <span key="ellipsis-start" className="pagination-ellipsis">
+            ...
+          </span>,
+        )
+      }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <Button
+          key={i}
+          variant={currentPage === i ? "primary" : "outline"}
+          size="small"
+          onClick={() => handlePageChange(i)}
+          className="pagination-button"
+        >
+          {i}
+        </Button>,
+      )
+    }
+
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        pageNumbers.push(
+          <span key="ellipsis-end" className="pagination-ellipsis">
+            ...
+          </span>,
+        )
+      }
+
+      pageNumbers.push(
+        <Button
+          key="last"
+          variant="outline"
+          size="small"
+          onClick={() => handlePageChange(totalPages)}
+          className="pagination-button"
+        >
+          {totalPages}
+        </Button>,
+      )
+    }
+
+    return pageNumbers
   }
 
   return (
     <div className="dragons-container">
       <div className="dragons-header">
+        <ThemeToggle />
         <h1 className="dragons-title">Coleção de Dragões</h1>
         <p className="dragons-subtitle">
           Explore nossa coleção de dragões lendários de diferentes tipos e habilidades.
@@ -89,73 +166,118 @@ export function DragonsList({ dragons }: DragonsListProps) {
       </div>
 
       <div className="search-container">
-        <span className="search-icon">🔍</span>
-        <input
-          type="text"
+        <Input
+          type="search"
           placeholder="Buscar por nome ou tipo..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
+        <Button>Crie um Dragão</Button>
       </div>
-
-      {dragonTypes.length > 0 && (
-        <div className="filter-container">
-          {dragonTypes.map((type) => (
-            <button
-              key={type}
-              className={`filter-badge ${getTypeClass(type)} ${activeFilter === type.toLowerCase() ? "active" : ""}`}
-              onClick={() =>
-                activeFilter === type.toLowerCase() ? setActiveFilter(null) : setActiveFilter(type.toLowerCase())
-              }
-            >
-              <span className="filter-icon">{getTypeIcon(type)}</span>
-              {type}
-            </button>
-          ))}
-        </div>
-      )}
 
       {filteredDragons.length === 0 ? (
         <div className="no-results">
           <p>Nenhum dragão encontrado com o termo "{searchTerm}".</p>
-          <button
-            className="clear-button"
+          <Button
+            variant="ghost"
             onClick={() => {
               setSearchTerm("")
               setActiveFilter(null)
             }}
           >
             Limpar filtros
-          </button>
+          </Button>
         </div>
       ) : (
-        <div className="dragons-grid">
-          {filteredDragons.map((dragon) => (
-            <div key={dragon.id} className="dragon-card">
-              <div className="dragon-header">
-                <h2 className="dragon-name">{dragon.name}</h2>
-                <span className={`dragon-type-badge ${getTypeClass(dragon.type)}`}>
-                  <span className="dragon-type-icon">{getTypeIcon(dragon.type)}</span>
-                  {dragon.type}
-                </span>
-              </div>
-              <div className="dragon-content">
-                <div className={`dragon-symbol ${getTypeClass(dragon.type)}`}>
-                  <span>{getTypeIcon(dragon.type)}</span>
-                </div>
-                <p className="dragon-description">Dragão lendário do elemento {dragon.type.toLowerCase()}</p>
-              </div>
-              <div className="dragon-footer">
-                <span className="dragon-id">ID: {dragon.id.substring(0, 8)}</span>
-                <button className="details-button">
-                  <span className="details-icon">ℹ️</span>
-                  <span>Detalhes</span>
-                </button>
-              </div>
+        <>
+          <div className="dragons-table-container">
+            <table className="dragons-table">
+              <thead>
+                <tr>
+                  <th className="selected-column"></th>
+                  <th className="name-column">NOME</th>
+                  <th>ELEMENTO</th>
+                  <th>DATA</th>
+                  <th>TIPO</th>
+                  <th>ORIGEM</th>
+                  <th>ID</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentDragons.map((dragon) => (
+                  <tr key={dragon.id} className="dragon-row">
+                    <td className="selected-column">
+                      <label className="checkbox-container">
+                        <input
+                          type="checkbox"
+                          checked={selectedDragons.includes(dragon.id)}
+                          onChange={() => toggleDragonSelection(dragon.id)}
+                        />
+                        <span className="checkmark"></span>
+                      </label>
+                    </td>
+                    <td className="name-column">
+                      <div className="dragon-name-with-avatar">
+                        <span className="dragon-name">{dragon.name}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="dragon-element">{dragon.type}</span>
+                    </td>
+                    <td>
+                      <span className="dragon-date">{new Date().toLocaleDateString("pt-BR")}</span>
+                    </td>
+                    <td>
+                      <span className={`dragon-tier ${getTypeClass(dragon.type)}`}>{dragon.type}</span>
+                    </td>
+                    <td>
+                      <span className="dragon-origin">Autosource</span>
+                    </td>
+                    <td>
+                      <span className="dragon-origin">
+                        {`dragon-${dragon.id.substring(0, 8)}`}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="pagination-container">
+            <div className="pagination-controls">
+              <Button
+                variant="default"
+                size="small"
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+                leftIcon={<ChevronLeft size={16} />}
+                className="pagination-nav-button"
+              >
+                Anterior
+              </Button>
+
+              <div className="pagination-numbers">{renderPageNumbers()}</div>
+
+              <Button
+                variant="default"
+                size="small"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                rightIcon={<ChevronRight size={16} />}
+                className="pagination-nav-button"
+              >
+                Próximo
+              </Button>
             </div>
-          ))}
-        </div>
+
+            <div className="pagination-info">
+              Mostrando {Math.min(filteredDragons.length, (currentPage - 1) * itemsPerPage + 1)} -{" "}
+              {Math.min(currentPage * itemsPerPage, filteredDragons.length)} de {filteredDragons.length} dragões
+            </div>
+          </div>
+        </>
       )}
     </div>
   )
