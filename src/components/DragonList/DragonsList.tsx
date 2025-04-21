@@ -30,7 +30,7 @@ export function DragonsList({ dragons }: DragonsListProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const navigate = useNavigate();
-  const { mutate: deleteDragon, isPending: isDeleting } =
+  const { mutate: deleteDragon } =
     useDeleteDragonMutation();
   const { success, error } = useToast();
 
@@ -319,9 +319,8 @@ export function DragonsList({ dragons }: DragonsListProps) {
                           variant="ghost"
                           size="icon"
                           aria-label="Editar"
-                          onClick={() =>
-                            console.log(`Edit dragon ${dragon.id}`)
-                          }
+                          className="delete-button"
+                          onClick={() => navigate(`/updateDragonPage/${dragon.id}`)}
                         >
                           <Pen size={18} />
                         </Button>
