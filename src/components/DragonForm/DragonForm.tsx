@@ -7,17 +7,17 @@ import { Input } from "../Input/input";
 import { Button } from "../Button/button";
 import { Shield, BookOpen } from "lucide-react";
 import Card from "../Card/card";
+import { useCreateDragonMutation } from "../../hooks/useCreateDragonMutation"; // <<< IMPORTANTE
 import "./dragon-form.css";
 
 interface DragonData {
   name: string;
   type: string;
-  histories: string[];
-  imageUrl: string;
+  histories?: string[];
+  imageUrl?: string;
 }
 
 export function DragonForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [dragonData, setDragonData] = useState<DragonData>({
     name: "",
     type: "",
@@ -25,7 +25,8 @@ export function DragonForm() {
     imageUrl: "",
   });
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const { mutate, isPending } = useCreateDragonMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -35,26 +36,25 @@ export function DragonForm() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    const newDragon = {
-      ...dragonData,
-      createdAt: new Date().toISOString(),
-      id: Math.floor(Math.random() * 1000).toString(),
-    };
 
-    console.log("Novo dragão:", newDragon);
-
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    setIsSubmitting(false);
-    setDragonData({
-      name: "",
-      type: "",
-      histories: [],
-      imageUrl: "",
-    });
+    mutate(
+      {
+        name: dragonData.name,
+        type: dragonData.type,
+        histories:
+          dragonData.histories && dragonData.histories.length > 0
+            ? dragonData.histories
+            : [],
+        imageUrl: dragonData.imageUrl?.trim() || "",
+      },
+      {
+        onSuccess: () => {
+          navigate("/dragonsListPage");
+        },
+      }
+    );
   };
 
   return (
@@ -129,17 +129,17 @@ export function DragonForm() {
               name="histories"
               label="Histórias do Dragão"
               placeholder="Ex: Guardião das montanhas, Protetor do tesouro antigo"
-              value={dragonData.histories.join(", ")}
+              value={dragonData.histories?.join(", ") || ""}
               onChange={(e) => {
                 const histories = e.target.value
                   .split(",")
-                  .map((h) => h.trim());
+                  .map((h) => h.trim())
+                  .filter((h) => h.length > 0);
                 setDragonData((prev) => ({
                   ...prev,
                   histories,
                 }));
               }}
-              required
               inputSize="medium"
               fullWidth
               className="dragon-input"
@@ -152,17 +152,17 @@ export function DragonForm() {
             type="button"
             variant="outline"
             className="reset-button"
-            onClick={() => navigate("/dragonsListPage")} 
+            onClick={() => navigate("/dragonsListPage")}
           >
             cancelar
           </Button>
           <Button
             type="submit"
             variant="primary"
-            isLoading={isSubmitting}
+            isLoading={isPending}
             className="submit-button"
           >
-            {isSubmitting ? "Adicionando..." : "Salvar"}
+            {isPending ? "Adicionando..." : "Salvar"}
           </Button>
         </div>
       </form>
