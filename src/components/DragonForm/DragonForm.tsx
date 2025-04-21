@@ -2,6 +2,7 @@
 
 import type React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Input } from "../Input/input";
 import { Button } from "../Button/button";
 import { Shield, BookOpen } from "lucide-react";
@@ -23,6 +24,8 @@ export function DragonForm() {
     histories: [],
     imageUrl: "",
   });
+
+  const navigate = useNavigate(); 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -149,9 +152,7 @@ export function DragonForm() {
             type="button"
             variant="outline"
             className="reset-button"
-            onClick={() =>
-              setDragonData({ name: "", type: "", histories: [], imageUrl: "" })
-            }
+            onClick={() => navigate("/dragonsListPage")} 
           >
             cancelar
           </Button>
