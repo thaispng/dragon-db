@@ -1,66 +1,67 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { Input } from "../Input/input"
-import { Button } from "../Button/button"
-import { Flame, Shield, BookOpen, RefreshCw, Plus } from "lucide-react"
-import Card from "../Card/card"
-import "./dragon-form.css"
+import type React from "react";
+import { useState } from "react";
+import { Input } from "../Input/input";
+import { Button } from "../Button/button";
+import { Shield, BookOpen } from "lucide-react";
+import Card from "../Card/card";
+import "./dragon-form.css";
 
 interface DragonData {
-  name: string
-  type: string
-  histories: string[]
+  name: string;
+  type: string;
+  histories: string[];
+  imageUrl: string;
 }
 
 export function DragonForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [dragonData, setDragonData] = useState<DragonData>({
     name: "",
     type: "",
     histories: [],
-  })
+    imageUrl: "",
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setDragonData((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-
-    // Aqui você adicionaria a lógica para enviar os dados
-    // Os campos createdAt e id seriam gerados automaticamente no backend
+    e.preventDefault();
+    setIsSubmitting(true);
     const newDragon = {
       ...dragonData,
       createdAt: new Date().toISOString(),
       id: Math.floor(Math.random() * 1000).toString(),
-    }
+    };
 
-    console.log("Novo dragão:", newDragon)
+    console.log("Novo dragão:", newDragon);
 
-    // Simulando envio do formulário
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    setIsSubmitting(false)
+    setIsSubmitting(false);
     setDragonData({
       name: "",
       type: "",
       histories: [],
-    })
-  }
+      imageUrl: "",
+    });
+  };
 
   return (
     <div className="dragon-form-wrapper">
       <div className="dragon-form-header">
         <div>
           <h2 className="dragon-form-title">Adicionar Novo Dragão</h2>
-          <p className="dragon-form-subtitle">Preencha os detalhes do seu dragão lendário</p>
+          <p className="dragon-form-subtitle">
+            Preencha os detalhes do seu dragão lendário
+          </p>
         </div>
       </div>
 
@@ -97,6 +98,17 @@ export function DragonForm() {
                 fullWidth
                 className="dragon-input"
               />
+
+              <Input
+                name="imageUrl"
+                label="URL da Imagem"
+                placeholder="Ex: https://exemplo.com/imagem-dragao.jpg"
+                value={dragonData.imageUrl}
+                onChange={handleChange}
+                inputSize="medium"
+                fullWidth
+                className="dragon-input"
+              />
             </div>
           </Card>
 
@@ -113,11 +125,13 @@ export function DragonForm() {
               placeholder="Ex: Guardião das montanhas, Protetor do tesouro antigo"
               value={dragonData.histories.join(", ")}
               onChange={(e) => {
-                const histories = e.target.value.split(",").map((h) => h.trim())
+                const histories = e.target.value
+                  .split(",")
+                  .map((h) => h.trim());
                 setDragonData((prev) => ({
                   ...prev,
                   histories,
-                }))
+                }));
               }}
               required
               inputSize="medium"
@@ -132,7 +146,9 @@ export function DragonForm() {
             type="button"
             variant="outline"
             className="reset-button"
-            onClick={() => setDragonData({ name: "", type: "", histories: [] })}
+            onClick={() =>
+              setDragonData({ name: "", type: "", histories: [], imageUrl: "" })
+            }
           >
             cancelar
           </Button>
@@ -147,5 +163,5 @@ export function DragonForm() {
         </div>
       </form>
     </div>
-  )
+  );
 }
