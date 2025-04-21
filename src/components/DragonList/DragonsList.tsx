@@ -1,119 +1,133 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useDeleteDragonMutation } from "../../hooks/useDeleteDragonMutation" // IMPORTANTE
-import "./dragons-list.css"
-import { ThemeToggle } from "../ThemeToggle"
-import { Input } from "../Input/input"
-import { Button } from "../Button/button"
-import { ChevronLeft, ChevronRight, Pen } from "lucide-react"
-import { DeleteModalPure } from "../DeleteModal/delete-modal-pure"
-import { useToast } from "../../components/Toast/use-toast"
+import { useState } from "react";
+import { useDeleteDragonMutation } from "../../hooks/useDeleteDragonMutation";
+import "./dragons-list.css";
+import { ThemeToggle } from "../ThemeToggle";
+import { Input } from "../Input/input";
+import { Button } from "../Button/button";
+import { ChevronLeft, ChevronRight, ImageOffIcon, Pen } from "lucide-react";
+import { DeleteModalPure } from "../DeleteModal/delete-modal-pure";
+import { useToast } from "../../components/Toast/use-toast";
 
 interface Dragon {
-  id: string
-  name: string
-  type: string
-  histories: string[]
-  ImageUrl: string
+  id: string;
+  name: string;
+  type: string;
+  histories: string[];
+  imageUrl: string;
 }
 
 interface DragonsListProps {
-  dragons: Dragon[]
+  dragons: Dragon[];
 }
 
 export function DragonsList({ dragons }: DragonsListProps) {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [activeFilter, setActiveFilter] = useState<string | null>(null)
-  const [selectedDragons, setSelectedDragons] = useState<string[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [selectedDragons, setSelectedDragons] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
-  const { mutate: deleteDragon, isPending: isDeleting } = useDeleteDragonMutation()
-  const { success, error } = useToast()
+  const { mutate: deleteDragon, isPending: isDeleting } =
+    useDeleteDragonMutation();
+  const { success, error } = useToast();
 
   const filteredDragons = dragons.filter((dragon) => {
     const matchesSearch =
       dragon.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      dragon.type.toLowerCase().includes(searchTerm.toLowerCase())
+      dragon.type.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesFilter = !activeFilter || dragon.type.toLowerCase() === activeFilter.toLowerCase()
+    const matchesFilter =
+      !activeFilter || dragon.type.toLowerCase() === activeFilter.toLowerCase();
 
-    return matchesSearch && matchesFilter
-  })
+    return matchesSearch && matchesFilter;
+  });
 
-  const totalPages = Math.ceil(filteredDragons.length / itemsPerPage)
+  const totalPages = Math.ceil(filteredDragons.length / itemsPerPage);
 
-  const currentDragons = filteredDragons.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+  const currentDragons = filteredDragons.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const getTypeClass = (type: string) => {
     switch (type.toLowerCase()) {
       case "fire":
       case "fogo":
-        return "tier-extraordinary"
+        return "tier-extraordinary";
       case "ice":
       case "gelo":
-        return "tier-elevated"
+        return "tier-elevated";
       case "earth":
       case "terra":
-        return "tier-essential"
+        return "tier-essential";
       case "lightning":
       case "relâmpago":
       case "electric":
-        return "tier-exceptional"
+        return "tier-exceptional";
       case "wind":
       case "vento":
       case "air":
       case "ar":
-        return "tier-elevated"
+        return "tier-elevated";
       default:
-        return "tier-essential"
+        return "tier-essential";
     }
-  }
+  };
 
   const toggleDragonSelection = (id: string) => {
-    setSelectedDragons((prev) => (prev.includes(id) ? prev.filter((dragonId) => dragonId !== id) : [...prev, id]))
-  }
+    setSelectedDragons((prev) =>
+      prev.includes(id)
+        ? prev.filter((dragonId) => dragonId !== id)
+        : [...prev, id]
+    );
+  };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
+    setCurrentPage(page);
+  };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
+      setCurrentPage(currentPage - 1);
     }
-  }
+  };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
+      setCurrentPage(currentPage + 1);
     }
-  }
+  };
 
   const handleDeleteDragon = (id: string) => {
     deleteDragon(id, {
       onSuccess: (data) => {
-        success("Dragão excluído", `O dragão foi removido com sucesso.`)
+        success("Dragão excluído", `O dragão foi removido com sucesso.`);
         if (selectedDragons.includes(id)) {
-          setSelectedDragons(selectedDragons.filter((dragonId) => dragonId !== id))
+          setSelectedDragons(
+            selectedDragons.filter((dragonId) => dragonId !== id)
+          );
         }
       },
       onError: (err) => {
-        error("Erro ao excluir", "Não foi possível excluir o dragão. Tente novamente.")
+        error(
+          "Erro ao excluir",
+          "Não foi possível excluir o dragão. Tente novamente."
+        );
       },
-    })
-  }
+    });
+  };
 
   const renderPageNumbers = () => {
-    const pageNumbers = []
+    const pageNumbers = [];
 
-    const maxVisiblePages = 5
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2))
-    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1)
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
     if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1)
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
 
     if (startPage > 1) {
@@ -126,15 +140,15 @@ export function DragonsList({ dragons }: DragonsListProps) {
           className="pagination-button"
         >
           1
-        </Button>,
-      )
+        </Button>
+      );
 
       if (startPage > 2) {
         pageNumbers.push(
           <span key="ellipsis-start" className="pagination-ellipsis">
             ...
-          </span>,
-        )
+          </span>
+        );
       }
     }
 
@@ -148,8 +162,8 @@ export function DragonsList({ dragons }: DragonsListProps) {
           className="pagination-button"
         >
           {i}
-        </Button>,
-      )
+        </Button>
+      );
     }
 
     if (endPage < totalPages) {
@@ -157,8 +171,8 @@ export function DragonsList({ dragons }: DragonsListProps) {
         pageNumbers.push(
           <span key="ellipsis-end" className="pagination-ellipsis">
             ...
-          </span>,
-        )
+          </span>
+        );
       }
 
       pageNumbers.push(
@@ -170,23 +184,22 @@ export function DragonsList({ dragons }: DragonsListProps) {
           className="pagination-button"
         >
           {totalPages}
-        </Button>,
-      )
+        </Button>
+      );
     }
 
-    return pageNumbers
-  }
+    return pageNumbers;
+  };
 
   return (
     <div className="dragons-container">
-      <div className="dragons-header-container">
-        <div className="dragons-header">
-          <h1 className="dragons-title">Coleção de Dragões</h1>
-          <p className="dragons-subtitle">
-            Explore nossa coleção de dragões lendários de diferentes tipos e habilidades.
-          </p>
-        </div>
+      <div className="dragons-header">
         <ThemeToggle />
+        <h1 className="dragons-title">Coleção de Dragões</h1>
+        <p className="dragons-subtitle">
+          Explore nossa coleção de dragões lendários de diferentes tipos e
+          habilidades.
+        </p>
       </div>
 
       <div className="search-container">
@@ -206,8 +219,8 @@ export function DragonsList({ dragons }: DragonsListProps) {
           <Button
             variant="ghost"
             onClick={() => {
-              setSearchTerm("")
-              setActiveFilter(null)
+              setSearchTerm("");
+              setActiveFilter(null);
             }}
           >
             Limpar filtros
@@ -221,13 +234,13 @@ export function DragonsList({ dragons }: DragonsListProps) {
                 <tr>
                   <th className="selected-column"></th>
                   <th className="avatar-column"></th>
+                  <th>ID</th>
                   <th className="name-column">NOME</th>
                   <th>ELEMENTO</th>
                   <th>DATA</th>
                   <th>TIPO</th>
                   <th>HISTORIA</th>
-                  <th>ID</th>
-                  <th>AÇÕES</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -244,15 +257,26 @@ export function DragonsList({ dragons }: DragonsListProps) {
                       </label>
                     </td>
                     <td className="avatar-column">
-                      {dragon.ImageUrl && (
-                        <div className="dragon-avatar">
+                      <div className="dragon-avatar">
+                        {dragon.imageUrl ? (
                           <img
-                            src={dragon.ImageUrl || "/placeholder.svg"}
+                            src={dragon.imageUrl}
                             alt={`${dragon.name} avatar`}
                             className="dragon-image"
                           />
-                        </div>
-                      )}
+                        ) : (
+                          <span className="no-image-text">
+                            <ImageOffIcon size={20} />
+                          </span>
+                        )}
+                      </div>
+                    </td>
+
+                    <td>
+                      <span className="dragon-origin">{`${dragon.id.substring(
+                        0,
+                        8
+                      )}`}</span>
                     </td>
                     <td className="name-column">
                       <span className="dragon-name">{dragon.name}</span>
@@ -261,24 +285,40 @@ export function DragonsList({ dragons }: DragonsListProps) {
                       <span className="dragon-element">{dragon.type}</span>
                     </td>
                     <td>
-                      <span className="dragon-date">{new Date().toLocaleDateString("pt-BR")}</span>
+                      <span className="dragon-date">
+                        {new Date().toLocaleDateString("pt-BR")}
+                      </span>
                     </td>
                     <td>
-                      <span className={`dragon-tier ${getTypeClass(dragon.type)}`}>{dragon.type}</span>
+                      <span
+                        className={`dragon-tier ${getTypeClass(dragon.type)}`}
+                      >
+                        {dragon.type}
+                      </span>
                     </td>
                     <td>
-                      <span className="dragon-origin">{dragon.histories}</span>
+                      <span className="dragon-origin">
+                        {dragon.histories.length > 0
+                          ? dragon.histories
+                              .map((history) =>
+                                history.length > 15
+                                  ? history.slice(0, 15) + "..."
+                                  : history
+                              )
+                              .join(", ")
+                          : "Nenhuma história"}
+                      </span>
                     </td>
-                    <td>
-                      <span className="dragon-origin">{`dragon-${dragon.id.substring(0, 8)}`}</span>
-                    </td>
+
                     <td>
                       <div className="action-buttons">
                         <Button
                           variant="ghost"
                           size="icon"
                           aria-label="Editar"
-                          onClick={() => console.log(`Edit dragon ${dragon.id}`)}
+                          onClick={() =>
+                            console.log(`Edit dragon ${dragon.id}`)
+                          }
                         >
                           <Pen size={18} />
                         </Button>
@@ -326,12 +366,17 @@ export function DragonsList({ dragons }: DragonsListProps) {
             </div>
 
             <div className="pagination-info">
-              Mostrando {Math.min(filteredDragons.length, (currentPage - 1) * itemsPerPage + 1)} -{" "}
-              {Math.min(currentPage * itemsPerPage, filteredDragons.length)} de {filteredDragons.length} dragões
+              Mostrando{" "}
+              {Math.min(
+                filteredDragons.length,
+                (currentPage - 1) * itemsPerPage + 1
+              )}{" "}
+              - {Math.min(currentPage * itemsPerPage, filteredDragons.length)}{" "}
+              de {filteredDragons.length} dragões
             </div>
           </div>
         </>
       )}
     </div>
-  )
+  );
 }
