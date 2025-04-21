@@ -14,6 +14,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
   fullWidth?: boolean
+  showRequired?: boolean
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -28,6 +29,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       rightIcon,
       fullWidth = false,
       id,
+      required,
+      showRequired = false,
       ...props
     },
     ref,
@@ -48,7 +51,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div className={inputContainerClasses}>
         {label && (
           <label htmlFor={inputId} className="input__label">
-            {label}
+            {label} {showRequired && required && <span className="input__required-asterisk">*</span>}
           </label>
         )}
         <div className="input__wrapper">
@@ -59,6 +62,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               rightIcon ? "input__field--with-right-icon" : ""
             }`}
             ref={ref}
+            required={required}
             {...props}
           />
           {rightIcon && <div className="input__icon input__icon--right">{rightIcon}</div>}

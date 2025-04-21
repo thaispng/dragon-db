@@ -85,6 +85,7 @@ export function DragonForm() {
                 inputSize="medium"
                 fullWidth
                 className="dragon-input"
+                showRequired
               />
 
               <Input
@@ -97,6 +98,7 @@ export function DragonForm() {
                 inputSize="medium"
                 fullWidth
                 className="dragon-input"
+                showRequired
               />
 
               <Input
@@ -108,6 +110,7 @@ export function DragonForm() {
                 inputSize="medium"
                 fullWidth
                 className="dragon-input"
+                showRequired
               />
             </div>
           </Card>
