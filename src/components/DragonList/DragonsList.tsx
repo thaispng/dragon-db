@@ -9,6 +9,7 @@ import { Button } from "../Button/button";
 import { ChevronLeft, ChevronRight, ImageOffIcon, Pen } from "lucide-react";
 import { DeleteModalPure } from "../DeleteModal/delete-modal-pure";
 import { useToast } from "../../components/Toast/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface Dragon {
   id: string;
@@ -28,7 +29,7 @@ export function DragonsList({ dragons }: DragonsListProps) {
   const [selectedDragons, setSelectedDragons] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
+  const navigate = useNavigate();
   const { mutate: deleteDragon, isPending: isDeleting } =
     useDeleteDragonMutation();
   const { success, error } = useToast();
@@ -210,7 +211,9 @@ export function DragonsList({ dragons }: DragonsListProps) {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
-        <Button>Crie um Dragão</Button>
+        <Button onClick={() => navigate("/CreateDragonPage")}>
+          Crie um Dragão
+        </Button>
       </div>
 
       {filteredDragons.length === 0 ? (
