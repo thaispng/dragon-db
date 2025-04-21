@@ -4,7 +4,7 @@ import RegisterPage from "./features/pages/register"
 import {DragonsListPage} from "./features/pages/dragonsListPage"
 import {ForgotPassword} from "./components/ForgotPassword/ForgotPassword"
 import {CreateDragonPage} from "./features/pages/createDragonPage"
-
+import {UpdateDragonForm} from "./components/UpdateDragonForm/UpdateDragonForm"
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +15,7 @@ function App() {
         <Route path="/dragonsListPage" element={<DragonsListPage/>} />
         <Route path="/forgotPassword" element={<ForgotPassword/>} />
         <Route path="*" element={<CreateDragonPage/>} />
+        <Route path="/updateDragonPage/:id" element={<UpdateDragonForm/>} />
       </Routes>
     </BrowserRouter>
   )
