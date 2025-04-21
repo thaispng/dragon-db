@@ -4,5 +4,5 @@ export type Dragon = {
   name: string;
   type: string;
   histories: string[];
-  ImageUrl: string;
+  imageUrl: string;
 };
