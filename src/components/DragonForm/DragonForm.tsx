@@ -1,5 +1,3 @@
-"use client";
-
 import type React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +5,7 @@ import { Input } from "../Input/input";
 import { Button } from "../Button/button";
 import { Shield, BookOpen } from "lucide-react";
 import Card from "../Card/card";
-import { useCreateDragonMutation } from "../../hooks/useCreateDragonMutation"; // <<< IMPORTANTE
+import { useCreateDragonMutation } from "../../hooks/useCreateDragonMutation"; 
 import "./dragon-form.css";
 
 interface DragonData {
@@ -15,6 +13,11 @@ interface DragonData {
   type: string;
   histories?: string[];
   imageUrl?: string;
+}
+
+interface FieldErrors {
+  name?: string;
+  type?: string;
 }
 
 export function DragonForm() {
@@ -25,6 +28,7 @@ export function DragonForm() {
     imageUrl: "",
   });
 
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const navigate = useNavigate();
   const { mutate, isPending } = useCreateDragonMutation();
 
@@ -34,10 +38,27 @@ export function DragonForm() {
       ...prev,
       [name]: value,
     }));
+    setFieldErrors((prev) => ({
+      ...prev,
+      [name]: undefined, // Limpa erro enquanto digita
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const errors: FieldErrors = {};
+    if (!dragonData.name.trim()) {
+      errors.name = "O nome do dragão é obrigatório.";
+    }
+    if (!dragonData.type.trim()) {
+      errors.type = "O tipo do dragão é obrigatório.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return; // NÃO envia se tiver erro
+    }
 
     mutate(
       {
@@ -89,6 +110,8 @@ export function DragonForm() {
                 fullWidth
                 className="dragon-input"
                 showRequired
+                variant={fieldErrors.name ? "error" : "default"}
+                helperText={fieldErrors.name}
               />
 
               <Input
@@ -102,6 +125,8 @@ export function DragonForm() {
                 fullWidth
                 className="dragon-input"
                 showRequired
+                variant={fieldErrors.type ? "error" : "default"}
+                helperText={fieldErrors.type}
               />
 
               <Input

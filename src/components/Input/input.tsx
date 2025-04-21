@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import "./input.css"
+import * as React from "react";
+import "./input.css";
 
-export type InputVariant = "default" | "error" | "success"
-export type InputSize = "small" | "medium" | "large"
+export type InputVariant = "default" | "error" | "success";
+export type InputSize = "small" | "medium" | "large";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  variant?: InputVariant
-  inputSize?: InputSize
-  label?: string
-  helperText?: string
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
-  fullWidth?: boolean
-  showRequired?: boolean
+  variant?: InputVariant;
+  inputSize?: InputSize;
+  label?: string;
+  helperText?: string;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  fullWidth?: boolean;
+  showRequired?: boolean;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -35,7 +35,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     },
     ref,
   ) => {
-    const inputId = id || `input-${Math.random().toString(36).substring(2, 9)}`
+    const inputId = id || `input-${Math.random().toString(36).substring(2, 9)}`;
 
     const inputContainerClasses = [
       "input-container",
@@ -45,32 +45,41 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       className,
     ]
       .filter(Boolean)
-      .join(" ")
+      .join(" ");
 
     return (
       <div className={inputContainerClasses}>
         {label && (
-          <label htmlFor={inputId} className="input__label">
+          <label htmlFor={inputId} className={`input__label`}>
             {label} {showRequired && required && <span className="input__required-asterisk">*</span>}
           </label>
         )}
         <div className="input__wrapper">
           {leftIcon && <div className="input__icon input__icon--left">{leftIcon}</div>}
+
           <input
             id={inputId}
-            className={`input__field ${leftIcon ? "input__field--with-left-icon" : ""} ${
-              rightIcon ? "input__field--with-right-icon" : ""
-            }`}
+            className={`input__field 
+              ${leftIcon ? "input__field--with-left-icon" : ""} 
+              ${rightIcon ? "input__field--with-right-icon" : ""}
+              input__field--${variant}
+            `}
             ref={ref}
             required={required}
             {...props}
           />
+
           {rightIcon && <div className="input__icon input__icon--right">{rightIcon}</div>}
         </div>
-        {helperText && <div className={`input__helper-text input__helper-text--${variant}`}>{helperText}</div>}
-      </div>
-    )
-  },
-)
 
-Input.displayName = "Input"
+        {helperText && (
+          <div className={`input__helper-text input__helper-text--${variant}`}>
+            {helperText}
+          </div>
+        )}
+      </div>
+    );
+  }
+);
+
+Input.displayName = "Input";

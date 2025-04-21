@@ -129,3 +129,18 @@
     width: 100%;
   }
 }
+
+.input--error .input__field,
+.input__field--error {
+  border-color: #e53e3e; 
+}
+
+.input--error .input__label,
+.input__helper-text--error {
+  color: #e53e3e; 
+}
+
+.input__field--error:focus {
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.3);
+}
+
