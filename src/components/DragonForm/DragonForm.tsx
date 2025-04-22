@@ -7,6 +7,7 @@ import { Shield, BookOpen } from "lucide-react";
 import Card from "../Card/card";
 import { useCreateDragonMutation } from "../../hooks/useCreateDragonMutation"; 
 import "./dragon-form.css";
+import { useToast } from "../Toast/use-toast";
 
 interface DragonData {
   name: string;
@@ -31,7 +32,7 @@ export function DragonForm() {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const navigate = useNavigate();
   const { mutate, isPending } = useCreateDragonMutation();
-
+  const {success} = useToast();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setDragonData((prev) => ({
@@ -40,7 +41,7 @@ export function DragonForm() {
     }));
     setFieldErrors((prev) => ({
       ...prev,
-      [name]: undefined, // Limpa erro enquanto digita
+      [name]: undefined,
     }));
   };
 
@@ -57,7 +58,7 @@ export function DragonForm() {
 
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
-      return; // NÃO envia se tiver erro
+      return;
     }
 
     mutate(
@@ -72,6 +73,7 @@ export function DragonForm() {
       },
       {
         onSuccess: () => {
+          success("Dragão adicionado com sucesso!")
           navigate("/dragonsListPage");
         },
       }
@@ -81,12 +83,12 @@ export function DragonForm() {
   return (
     <div className="dragon-form-wrapper">
       <div className="dragon-form-header">
-        <div>
-          <h2 className="dragon-form-title">Adicionar Novo Dragão</h2>
-          <p className="dragon-form-subtitle">
-            Preencha os detalhes do seu dragão lendário
-          </p>
-        </div>
+        <div className="dragons-header">
+        <h1 className="dragons-title">Adicionar Novo Dragão</h1>
+        <p className="dragons-subtitle">
+        Preencha os detalhes do seu dragão lendário
+        </p>
+      </div>
       </div>
 
       <form onSubmit={handleSubmit} className="dragon-form">
@@ -179,7 +181,7 @@ export function DragonForm() {
             className="reset-button"
             onClick={() => navigate("/dragonsListPage")}
           >
-            cancelar
+            Cancelar
           </Button>
           <Button
             type="submit"
