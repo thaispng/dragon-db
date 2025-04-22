@@ -5,7 +5,6 @@ import { Button } from "../Button/button"
 import { Input } from "../Input/input"
 import "./Auth.css"
 import { Link } from "react-router-dom"
-import { ThemeToggle } from "../ThemeToggle"
 
 interface AuthFormProps {
   title: string
@@ -16,7 +15,12 @@ interface AuthFormProps {
   footerText?: React.ReactNode
   className?: string
   showForgotPassword?: boolean
-  showPasswordField?: boolean 
+  showPasswordField?: boolean
+  isLoading?: boolean
+  onEmailChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  emailValue?: string
+  passwordValue?: string
 }
 
 export function AuthForm({
@@ -27,8 +31,13 @@ export function AuthForm({
   children,
   footerText,
   className,
-  showForgotPassword = true,
-  showPasswordField = true, 
+  showForgotPassword = false,
+  showPasswordField = true,
+  isLoading = false,
+  onEmailChange,
+  onPasswordChange,
+  emailValue = "",
+  passwordValue = "",
   ...props
 }: AuthFormProps) {
   return (
@@ -38,7 +47,6 @@ export function AuthForm({
           <form className="login-form" onSubmit={onSubmit}>
             <div className="login-form-inner">
               <div className="login-header">
-              <ThemeToggle  />
                 <h1 className="login-title">{title}</h1>
                 <p className="login-subtitle">{subtitle}</p>
               </div>
@@ -46,7 +54,15 @@ export function AuthForm({
                 <label htmlFor="email" className="form-label">
                   Email
                 </label>
-                <Input id="email" type="email" className="form-input" placeholder="seuemail@exemplo.com" required />
+                <Input 
+                  id="email" 
+                  type="email" 
+                  className="form-input" 
+                  placeholder="seuemail@exemplo.com" 
+                  required 
+                  value={emailValue}
+                  onChange={onEmailChange}
+                />
               </div>
               {showPasswordField && (
                 <div className="form-group">
@@ -60,11 +76,18 @@ export function AuthForm({
                       </Link>
                     )}
                   </div>
-                  <Input id="password" type="password" className="form-input" required />
+                  <Input 
+                    id="password" 
+                    type="password" 
+                    className="form-input" 
+                    required
+                    value={passwordValue}
+                    onChange={onPasswordChange}
+                  />
                 </div>
               )}
               {children}
-              <Button type="submit" variant="primary" size="medium" isLoading={false}>
+              <Button type="submit" variant="primary" size="medium" isLoading={isLoading}>
                 {buttonText}
               </Button>
               {footerText && <div className="signup-prompt">{footerText}</div>}
@@ -76,8 +99,8 @@ export function AuthForm({
         </div>
       </div>
       <div className="terms-text">
-        Ao clicar em continuar, você concorda com nossos <a href="#">Termos de Serviço</a> e{" "}
-        <a href="#">Política de Privacidade</a>.
+        Ao clicar em continuar, você concorda com nossos <Link to="/termos">Termos de Serviço</Link> e{" "}
+        <Link to="/privacidade">Política de Privacidade</Link>.
       </div>
     </div>
   )
