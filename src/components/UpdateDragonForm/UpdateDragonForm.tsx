@@ -8,6 +8,7 @@ import Card from "../Card/card";
 import { useUpdateDragonMutation } from "../../hooks/useUpdateDragonMutation";
 import { useGetDragonByIdQuery } from "../../hooks/useGetDragonByIdQuery";
 import "./dragon-form.css";
+import { useToast } from "../Toast/use-toast";
 
 interface DragonData {
   name: string;
@@ -36,6 +37,7 @@ export function UpdateDragonForm() {
   const { mutate, isPending } = useUpdateDragonMutation();
   const { data: dragon, isLoading } = useGetDragonByIdQuery(id || "");
 
+  const {success} = useToast();
   useEffect(() => {
     if (dragon) {
       setDragonData({
@@ -87,6 +89,9 @@ export function UpdateDragonForm() {
       },
       {
         onSuccess: () => {
+          success(
+            "Dragão atualizado com sucesso!"
+          );
           navigate("/dragonsListPage");
         },
       }
@@ -104,12 +109,12 @@ export function UpdateDragonForm() {
   return (
     <div className="dragon-form-wrapper">
       <div className="dragon-form-header">
-        <div>
-          <h2 className="dragon-form-title">Atualizar Dragão</h2>
-          <p className="dragon-form-subtitle">
-            Edite os detalhes do seu dragão lendário
-          </p>
-        </div>
+        <div className="dragons-header">
+        <h1 className="dragons-title">Atualizar Dragão</h1>
+        <p className="dragons-subtitle">
+        Edite os detalhes do seu dragão lendário
+        </p>
+      </div>
       </div>
 
       <form onSubmit={handleSubmit} className="dragon-form">
@@ -202,7 +207,7 @@ export function UpdateDragonForm() {
             className="reset-button"
             onClick={() => navigate("/dragonsListPage")}
           >
-            cancelar
+            Cancelar
           </Button>
           <Button
             type="submit"
