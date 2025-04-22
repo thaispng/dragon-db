@@ -6,6 +6,7 @@ import App from "./App"
 import reportWebVitals from "./lib/reportWebVitals"
 import { ThemeProvider } from "./context/ThemeContext"
 import { ToastProvider } from "./components/Toast/toast-provider"
+import { AuthProvider } from "./context/AuthContext"
 import "./assets/styles/theme.css"
 
 const queryClient = new QueryClient()
@@ -15,9 +16,11 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <ToastProvider>
-          <App />
-        </ToastProvider>
+        <AuthProvider>
+          <ToastProvider>
+            <App />
+          </ToastProvider>
+        </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>,
