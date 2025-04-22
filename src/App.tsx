@@ -1,24 +1,67 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
-import LoginPage from "./features/pages/login"
-import RegisterPage from "./features/pages/register"
-import {DragonsListPage} from "./features/pages/dragonsListPage"
-import {ForgotPassword} from "./components/ForgotPassword/ForgotPassword"
-import {CreateDragonPage} from "./features/pages/createDragonPage"
-import {UpdateDragonForm} from "./components/UpdateDragonForm/UpdateDragonForm"
-function App() {
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import LoginPage from "./features/pages/login";
+import RegisterPage from "./features/pages/register";
+import { DragonsListPage } from "./features/pages/dragonsListPage";
+import { ForgotPassword } from "./components/ForgotPassword/ForgotPassword";
+import { CreateDragonPage } from "./features/pages/createDragonPage";
+import { AuthProvider } from "./context/AuthContext";
+import { Navbar } from "./components/Navbar/Navbar";
+import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
+import { UpdateDragonPage } from "./features/pages/updateDragonPage";
+
+function AppRoutes() {
+  const location = useLocation();
+  const hideNavbarRoutes = ["/login", "/register"];
+
+  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+
   return (
-    <BrowserRouter>
+    <>
+      {!shouldHideNavbar && <Navbar />}
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/dragonsListPage" element={<DragonsListPage/>} />
-        <Route path="/forgotPassword" element={<ForgotPassword/>} />
-        <Route path="*" element={<CreateDragonPage/>} />
-        <Route path="/updateDragonPage/:id" element={<UpdateDragonForm/>} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+
+        <Route
+          path="/dragonsListPage"
+          element={
+            <ProtectedRoute>
+              <DragonsListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createDragonPage"
+          element={
+            <ProtectedRoute>
+              <CreateDragonPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/updateDragonPage/:id"
+          element={
+            <ProtectedRoute>
+              <UpdateDragonPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
-    </BrowserRouter>
-  )
+    </>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}
+
+export default App;
