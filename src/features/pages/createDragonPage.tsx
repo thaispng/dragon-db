@@ -1,5 +1,4 @@
 import { DragonForm } from "../../components/DragonForm/DragonForm";
-import { ThemeToggle } from "../../components/ThemeToggle";
 
 
 export function CreateDragonPage() {
@@ -7,7 +6,6 @@ export function CreateDragonPage() {
     <div>
           <div className="dragons-container">
       <div className="dragons-header">
-        <ThemeToggle />
         <DragonForm />
       </div>
 
