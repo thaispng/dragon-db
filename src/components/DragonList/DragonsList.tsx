@@ -3,10 +3,15 @@
 import { useState } from "react";
 import { useDeleteDragonMutation } from "../../hooks/useDeleteDragonMutation";
 import "./dragons-list.css";
-import { ThemeToggle } from "../ThemeToggle";
 import { Input } from "../Input/input";
 import { Button } from "../Button/button";
-import { ChevronLeft, ChevronRight, ImageOffIcon, Pen } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ImageOffIcon,
+  Pen,
+  TrashIcon,
+} from "lucide-react";
 import { DeleteModalPure } from "../DeleteModal/delete-modal-pure";
 import { useToast } from "../../components/Toast/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +22,7 @@ interface Dragon {
   type: string;
   histories: string[];
   imageUrl: string;
+  createdAt: string;
 }
 
 interface DragonsListProps {
@@ -30,8 +36,7 @@ export function DragonsList({ dragons }: DragonsListProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const navigate = useNavigate();
-  const { mutate: deleteDragon } =
-    useDeleteDragonMutation();
+  const { mutate: deleteDragon } = useDeleteDragonMutation();
   const { success, error } = useToast();
 
   const filteredDragons = dragons.filter((dragon) => {
@@ -51,31 +56,6 @@ export function DragonsList({ dragons }: DragonsListProps) {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  const getTypeClass = (type: string) => {
-    switch (type.toLowerCase()) {
-      case "fire":
-      case "fogo":
-        return "tier-extraordinary";
-      case "ice":
-      case "gelo":
-        return "tier-elevated";
-      case "earth":
-      case "terra":
-        return "tier-essential";
-      case "lightning":
-      case "relâmpago":
-      case "electric":
-        return "tier-exceptional";
-      case "wind":
-      case "vento":
-      case "air":
-      case "ar":
-        return "tier-elevated";
-      default:
-        return "tier-essential";
-    }
-  };
 
   const toggleDragonSelection = (id: string) => {
     setSelectedDragons((prev) =>
@@ -195,7 +175,6 @@ export function DragonsList({ dragons }: DragonsListProps) {
   return (
     <div className="dragons-container">
       <div className="dragons-header">
-        <ThemeToggle />
         <h1 className="dragons-title">Coleção de Dragões</h1>
         <p className="dragons-subtitle">
           Explore nossa coleção de dragões lendários de diferentes tipos e
@@ -211,9 +190,25 @@ export function DragonsList({ dragons }: DragonsListProps) {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
-        <Button onClick={() => navigate("/CreateDragonPage")}>
-          Crie um Dragão
-        </Button>
+        <div className="more-actions-container">
+          {selectedDragons.length > 1 && (
+            <Button
+              variant="outline"
+              className="ml-2 flex items-center gap-2"
+              onClick={() => {
+                selectedDragons.forEach((id) => handleDeleteDragon(id));
+                setSelectedDragons([]);
+              }}
+            >
+              <TrashIcon size={16} />
+              Excluir ({selectedDragons.length})
+            </Button>
+          )}
+
+          <Button onClick={() => navigate("/CreateDragonPage")}>
+            Crie um Dragão
+          </Button>
+        </div>
       </div>
 
       {filteredDragons.length === 0 ? (
@@ -239,9 +234,8 @@ export function DragonsList({ dragons }: DragonsListProps) {
                   <th className="avatar-column"></th>
                   <th>ID</th>
                   <th className="name-column">NOME</th>
-                  <th>ELEMENTO</th>
-                  <th>DATA</th>
-                  <th>TIPO</th>
+                  <th>ELEMENTO / TIPO</th>
+                  <th>CRIADO EM</th>
                   <th>HISTORIA</th>
                   <th></th>
                 </tr>
@@ -289,14 +283,7 @@ export function DragonsList({ dragons }: DragonsListProps) {
                     </td>
                     <td>
                       <span className="dragon-date">
-                        {new Date().toLocaleDateString("pt-BR")}
-                      </span>
-                    </td>
-                    <td>
-                      <span
-                        className={`dragon-tier ${getTypeClass(dragon.type)}`}
-                      >
-                        {dragon.type}
+                        {new Date(dragon.createdAt).toLocaleDateString()}
                       </span>
                     </td>
                     <td>
@@ -320,7 +307,9 @@ export function DragonsList({ dragons }: DragonsListProps) {
                           size="icon"
                           aria-label="Editar"
                           className="delete-button"
-                          onClick={() => navigate(`/updateDragonPage/${dragon.id}`)}
+                          onClick={() =>
+                            navigate(`/updateDragonPage/${dragon.id}`)
+                          }
                         >
                           <Pen size={18} />
                         </Button>

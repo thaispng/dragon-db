@@ -28,6 +28,8 @@
   --table-header-color: #6b7280;
   --checkbox-color: #4f46e5;
   --link-color: #4f46e5;
+
+  --primary-button-color: #e86a6a;
 }
 
 [data-theme="dark"] {
@@ -60,6 +62,8 @@
   --color-exceptional: rgba(217, 119, 6, 0.2);
   --color-exceptional-text: #fbbf24;
   --color-exceptional-border: rgba(251, 191, 36, 0.3);
+
+  --primary-button-color: #e86a6a;
 }
 
 .dragons-container {
@@ -79,6 +83,7 @@
   font-size: 28px;
   font-weight: 700;
   color: var(--text-color);
+  margin: 0 auto;
 }
 
 .dragons-subtitle {
@@ -119,6 +124,12 @@
   box-shadow: 0 0 0 3px var(--shadow-color);
 }
 
+.more-actions-container{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .no-results {
   text-align: center;
   padding: 48px 0;
@@ -155,7 +166,7 @@
 .dragons-table {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
+  text-align: center;
   background-color: var(--card-background);
 }
 
@@ -330,16 +341,17 @@
   background-color: var(--card-background);
   border: 2px solid var(--border-color);
   border-radius: 4px;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease; /* SUAVE */
 }
 
 .checkbox-container:hover input ~ .checkmark {
   border-color: var(--primary-color);
+  border-color: var(--primary-button-color);
 }
 
 .checkbox-container input:checked ~ .checkmark {
-  background-color: var(--checkbox-color);
-  border-color: var(--checkbox-color);
+  background-color: var(--primary-button-color);
+  border-color: var(--primary-button-color);
 }
 
 .checkmark:after {
