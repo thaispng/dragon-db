@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import { useEffect, useState } from "react"
 import { Button } from "../Button/button"
 import { Input } from "../Input/input"
 import "./Auth.css"
@@ -40,6 +40,19 @@ export function AuthForm({
   passwordValue = "",
   ...props
 }: AuthFormProps) {
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  useEffect(() => {
+    const checkViewport = () => {
+      setIsDesktop(window.innerWidth >= 768)
+    }
+
+    checkViewport()
+
+    window.addEventListener("resize", checkViewport)
+    return () => window.removeEventListener("resize", checkViewport)
+  }, [])
+
   return (
     <div className={`login-form-container ${className || ""}`} {...props}>
       <div className="login-card">
@@ -50,6 +63,7 @@ export function AuthForm({
                 <h1 className="login-title">{title}</h1>
                 <p className="login-subtitle">{subtitle}</p>
               </div>
+
               <div className="form-group">
                 <label htmlFor="email" className="form-label">
                   Email
@@ -64,6 +78,7 @@ export function AuthForm({
                   onChange={onEmailChange}
                 />
               </div>
+
               {showPasswordField && (
                 <div className="form-group">
                   <div className="password-header">
@@ -86,18 +101,34 @@ export function AuthForm({
                   />
                 </div>
               )}
+
               {children}
+
               <Button type="submit" variant="primary" size="medium" isLoading={isLoading}>
                 {buttonText}
               </Button>
-              {footerText && <div className="signup-prompt">{footerText}</div>}
+
+              {footerText && (
+                <div className="signup-prompt">{footerText}</div>
+              )}
             </div>
           </form>
-          <div className="login-image-container">
-            <video className="login-video" src="/motion-video.mp4" autoPlay loop muted playsInline />
-          </div>
+
+          {isDesktop && (
+            <div className="login-image-container">
+              <video 
+                className="login-video" 
+                src="/motion-video.mp4" 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+              />
+            </div>
+          )}
         </div>
       </div>
+
       <div className="terms-text">
         Ao clicar em continuar, você concorda com nossos <Link to="/termos">Termos de Serviço</Link> e{" "}
         <Link to="/privacidade">Política de Privacidade</Link>.
