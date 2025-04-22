@@ -1,12 +1,10 @@
 import { UpdateDragonForm } from "../../components/UpdateDragonForm/UpdateDragonForm";
-import { ThemeToggle } from "../../components/ThemeToggle";
 
-export function updateDragonPage() {
+export function UpdateDragonPage() {
   return (
     <div>
           <div className="dragons-container">
       <div className="dragons-header">
-        <ThemeToggle />
         <UpdateDragonForm />
       </div>
           </div>
