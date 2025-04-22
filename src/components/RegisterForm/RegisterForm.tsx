@@ -50,20 +50,6 @@ export function RegisterForm() {
       passwordValue={password}
     >
       <div className="form-group">
-        <label htmlFor="name" className="form-label">
-          Nome
-        </label>
-        <Input
-          id="name"
-          type="text"
-          className="form-input"
-          placeholder="Seu nome completo"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-      <div className="form-group">
         <label htmlFor="confirmPassword" className="form-label">
           Confirmar Senha
         </label>
@@ -78,6 +64,20 @@ export function RegisterForm() {
           variant={error ? "error" : "default"}
         />
         {error && <div className="input__helper-text input__helper-text--error">{error}</div>}
+      </div>
+      <div className="form-group">
+        <label htmlFor="name" className="form-label">
+          Nome
+        </label>
+        <Input
+          id="name"
+          type="text"
+          className="form-input"
+          placeholder="Seu nome completo"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
       </div>
     </AuthForm>
   );
