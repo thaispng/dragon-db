@@ -1,0 +1,139 @@
+.navbar {
+  box-shadow: 0 1px 3px var(--shadow-color);
+  padding: 0.75rem 0;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.navbar-brand {
+  font-weight: 700;
+}
+
+.navbar-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+
+.navbar-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--primary-color);
+  transition: width 0.2s;
+}
+
+.navbar-link:hover::after {
+  width: 100%;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-greeting {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  white-space: nowrap;
+}
+
+.user-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.login-button,
+.register-button,
+.logout-button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-button {
+  color: var(--primary-color);
+  background: transparent;
+  border: 1px solid var(--border-color);
+}
+
+.login-button:hover {
+  background-color: var(--hover-color);
+}
+
+.register-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: 1px solid var(--primary-color);
+}
+
+.register-button:hover {
+  opacity: 0.9;
+}
+
+.logout-button {
+  color: var(--text-color);
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+}
+
+.logout-button:hover {
+  background-color: var(--hover-color);
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .navbar-content {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .navbar-links {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .navbar-actions {
+    width: 100%;
+    justify-content: center;
+  }
+}
