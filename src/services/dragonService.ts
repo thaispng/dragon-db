@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { Dragon } from '../types/dragonTypes';
 
-const API_URL = 'http://5c4b2a47aa8ee500142b4887.mockapi.io/api/v1/dragon';
+const protocol = window.location.protocol === 'https:' ? 'https' : 'http';
+const API_URL = `${protocol}://5c4b2a47aa8ee500142b4887.mockapi.io/api/v1/dragon`;
 
 export const dragonsService = {
   getAll: async (): Promise<Dragon[]> => {
