@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 "use client"
 
 import { useState, useEffect } from "react"
@@ -5,7 +6,7 @@ import { useDeleteDragonMutation } from "../../hooks/useDeleteDragonMutation"
 import "./dragons-list.css"
 import { Input } from "../Input/input"
 import { Button } from "../Button/button"
-import { ChevronLeft, ChevronRight, ImageOffIcon, Pen, TrashIcon, Search } from "lucide-react"
+import { ChevronLeft, ChevronRight, ImageOffIcon, Pen, TrashIcon, AlertTriangle } from "lucide-react"
 import { DeleteModalPure } from "../DeleteModal/delete-modal-pure"
 import { useToast } from "../../components/Toast/use-toast"
 import { useNavigate } from "react-router-dom"
@@ -35,6 +36,7 @@ export function DragonsList({ dragons }: DragonsListProps) {
   const navigate = useNavigate()
   const { mutate: deleteDragon } = useDeleteDragonMutation()
   const { success, error } = useToast()
+  const [showBulkDeleteModal, setShowBulkDeleteModal] = useState(false)
 
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -90,18 +92,41 @@ export function DragonsList({ dragons }: DragonsListProps) {
 
   const handleDeleteMultiple = async () => {
     setIsLoading(true)
+    let successCount = 0
+    let failCount = 0
+
     try {
       for (const id of selectedDragons) {
         await new Promise<void>((resolve) => {
           deleteDragon(id, {
-            onSuccess: () => resolve(),
-            onError: () => resolve(),
+            onSuccess: () => {
+              successCount = successCount + 1
+              resolve()
+            },
+            onError: () => {
+              failCount = failCount + 1
+              resolve()
+            },
           })
         })
       }
-      setSelectedDragons([])
+    } catch (err) {
+      console.error("Error in bulk delete:", err)
     } finally {
+      if (successCount > 0) {
+        success(
+          "Dragões excluídos",
+          `${successCount} ${successCount === 1 ? "dragão foi removido" : "dragões foram removidos"} com sucesso.`,
+        )
+      }
+
+      if (failCount > 0) {
+        error("Erro ao excluir", `Não foi possível excluir ${failCount} ${failCount === 1 ? "dragão" : "dragões"}.`)
+      }
+
+      setSelectedDragons([])
       setIsLoading(false)
+      setShowBulkDeleteModal(false)
     }
   }
 
@@ -186,25 +211,67 @@ export function DragonsList({ dragons }: DragonsListProps) {
       </div>
 
       <div className="search-container">
-          <Input
-            type="search"
-            placeholder="Buscar por nome ou tipo..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <Input
+          type="search"
+          placeholder="Buscar por nome ou tipo..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <div className="more-actions-container">
           {selectedDragons.length > 1 && (
-            <Button
-              variant="outline"
-              className="ml-2 flex items-center gap-2"
-              onClick={() => {
-                selectedDragons.forEach((id) => handleDeleteDragon(id))
-                setSelectedDragons([])
-              }}
-            >
-              <TrashIcon size={16} />
-              <span className="button-text-desktop">Excluir</span> ({selectedDragons.length})
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                className="ml-2 flex items-center gap-2"
+                onClick={() => setShowBulkDeleteModal(true)}
+              >
+                <TrashIcon size={16} />
+                <span className="button-text-desktop">Excluir</span> ({selectedDragons.length})
+              </Button>
+
+              {showBulkDeleteModal && (
+                <div className="modal-overlay" role="dialog" aria-modal="true">
+                  <div className="modal-container">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h2 className="modal-title">Excluir Dragões</h2>
+                        <button
+                          className="modal-close"
+                          onClick={() => setShowBulkDeleteModal(false)}
+                          aria-label="Fechar"
+                        >
+                          &times;
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        <div className="modal-icon">
+                          <AlertTriangle size={24} />
+                        </div>
+                        <p className="modal-description">
+                          Tem certeza que deseja excluir{" "}
+                          <span className="item-name">{selectedDragons.length} dragões</span>? Esta ação não pode ser
+                          desfeita.
+                        </p>
+                      </div>
+                      <div className="modal-footer">
+                        <button className="modal-button cancel" onClick={() => setShowBulkDeleteModal(false)}>
+                          Cancelar
+                        </button>
+                        <button
+                          className="modal-button delete"
+                          onClick={() => {
+                            handleDeleteMultiple()
+                            setShowBulkDeleteModal(false)
+                          }}
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
 
           <Button onClick={() => navigate("/CreateDragonPage")}>
