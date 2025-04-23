@@ -5,6 +5,7 @@ Uma aplicação web para gerenciar um catálogo de dragões, permitindo visualiz
 ## 📋 Conteúdo
 
 - [Sobre o Projeto](#sobre-o-projeto)
+- [Objetivos](#objetivos)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Arquitetura e Organização](#arquitetura-e-organização)
 - [Como Iniciar](#como-iniciar)
@@ -13,7 +14,31 @@ Uma aplicação web para gerenciar um catálogo de dragões, permitindo visualiz
 
 ## 🔍 Sobre o Projeto
 
-Dragons-DB é uma aplicação React com TypeScript que permite gerenciar uma base de dados de dragões. O sistema inclui autenticação de usuários, cadastro de dragões com imagens, listagem com paginação, e operações completas de CRUD (Criar, Ler, Atualizar e Deletar).
+Dragons-DB é uma aplicação React com TypeScript que permite gerenciar uma base de dados de dragões. O sistema inclui autenticação de usuários, cadastro de dragões, listagem em ordem alfabética, e operações completas de CRUD (Criar, Ler, Atualizar e Deletar).
+
+## 🎯 Objetivos
+
+Este projeto foi desenvolvido atendendo aos seguintes requisitos:
+
+1. **Sistema de Autenticação**:
+   - Implementação de página de login, única disponível sem autenticação
+   - Sistema de criação de usuário para acesso à aplicação
+
+2. **Gerenciamento de Dragões**:
+   - Listagem de dragões organizados em ordem alfabética
+   - Funcionalidades de remoção e alteração de informações via interface
+   - Cadastro de novos dragões
+   - Visualização detalhada incluindo data de criação, nome e tipo
+
+3. **Interface**:
+   - Layout totalmente responsivo
+   - Design elaborado sem uso de bibliotecas externas como Bootstrap ou Material Design
+   - Interface amigável e intuitiva
+
+4. **Qualidade de Código**:
+   - Organização estruturada do código
+   - Componentização eficiente das páginas
+   - Uso adequado de CSS/SASS sem dependências de bibliotecas de estilo externas
 
 ## 💻 Tecnologias Utilizadas
 
@@ -51,6 +76,7 @@ src/
 3. **Custom Hooks**: Encapsulamento da lógica de negócios e requisições à API
 4. **Páginas por Funcionalidade**: Organização das páginas baseada em funcionalidades
 5. **Sistema de Tema**: Suporte a temas claro e escuro
+6. **Rotas Protegidas**: Acesso condicional baseado na autenticação do usuário
 
 ## 🚀 Como Iniciar
 
@@ -83,13 +109,34 @@ src/
 
 4. Abra [http://localhost:3000](http://localhost:3000) no navegador para visualizar a aplicação.
 
+### Credenciais para Teste
+
+Para acessar a aplicação, você pode usar:
+- **Email**: user@example.com
+- **Senha**: password
+
+Ou registrar um novo usuário pela interface de cadastro.
+
 ## ✨ Funcionalidades
 
-- **Autenticação**: Registro, login e recuperação de senha
-- **Lista de Dragões**: Visualização paginada com busca e filtragem
-- **Gerenciamento de Dragões**: Criação, edição e exclusão
-- **Tema**: Alternância entre tema claro e escuro
-- **Responsividade**: Interface adaptável a diferentes tamanhos de tela
+- **Sistema de Autenticação**:
+  - Login com validação de campos
+  - Cadastro de novos usuários
+  - Recuperação de senha
+  - Rotas protegidas
+
+- **Gerenciamento de Dragões**:
+  - **Listagem**: Exibição em ordem alfabética com paginação
+  - **Cadastro**: Formulário para adição de novos dragões
+  - **Edição**: Atualização das informações existentes
+  - **Remoção**: Exclusão com confirmação
+  - **Detalhes**: Visualização completa das informações de cada dragão
+
+- **Interface**:
+  - Tema claro/escuro
+  - Layout responsivo para diferentes dispositivos
+  - Notificações via toast para feedback ao usuário
+  - Componentes personalizados sem dependências de UI frameworks externos
 
 ## 🔌 API
 
@@ -106,7 +153,7 @@ type Dragon = {
   name: string;
   type: string;
   histories: string[];
-  imageUrl: string;
+  imageUrl?: string;
 };
 ```
 
@@ -115,3 +162,12 @@ type Dragon = {
 - **npm start**: Inicia a aplicação em modo de desenvolvimento
 - **npm test**: Executa os testes
 - **npm run build**: Gera uma versão de produção otimizada
+
+## 📱 Responsividade
+
+A aplicação foi desenvolvida seguindo o conceito de Mobile First, garantindo uma experiência de usuário adequada em dispositivos com diferentes tamanhos de tela, desde smartphones até desktops.
+
+## ⚠️ Observações Importantes
+
+- Todos os estilos foram implementados manualmente sem uso de bibliotecas como Bootstrap ou Material Design, conforme solicitado
+- O projeto está configurado para utilizar TypeScript para maior segurança e manutenibilidade do código
