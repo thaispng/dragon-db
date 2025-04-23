@@ -112,8 +112,8 @@ src/
 ### Credenciais para Teste
 
 Para acessar a aplicação, você pode usar:
-- **Email**: user@example.com
-- **Senha**: password
+- **Email**: dragondb@email.com
+- **Senha**: Dragon12@@
 
 Ou registrar um novo usuário pela interface de cadastro.
 
