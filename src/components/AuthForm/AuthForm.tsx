@@ -21,6 +21,7 @@ interface AuthFormProps {
   onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   emailValue?: string
   passwordValue?: string
+  beforeFields?: React.ReactNode
 }
 
 export function AuthForm({
@@ -38,6 +39,7 @@ export function AuthForm({
   onPasswordChange,
   emailValue = "",
   passwordValue = "",
+  beforeFields,
   ...props
 }: AuthFormProps) {
   const [isDesktop, setIsDesktop] = useState(false)
@@ -63,7 +65,7 @@ export function AuthForm({
                 <h1 className="login-title">{title}</h1>
                 <p className="login-subtitle">{subtitle}</p>
               </div>
-
+              {beforeFields}
               <div className="form-group">
                 <label htmlFor="email" className="form-label">
                   Email
