@@ -74,6 +74,7 @@
   color: var(--text-color);
   background-color: var(--background-color);
 }
+
 .dragons-header {
   text-align: start;
   margin-bottom: 16px;
@@ -91,6 +92,7 @@
   margin: 0 auto;
   font-size: 16px;
 }
+
 .search-container {
   position: relative;
   margin: 0 auto 24px;
@@ -106,22 +108,6 @@
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-light);
-}
-
-.search-input {
-  width: 400px;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  color: var(--text-color);
-  background-color: var(--card-background);
-}
-
-.search-input:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px var(--shadow-color);
 }
 
 .more-actions-container{
@@ -141,21 +127,6 @@
   gap: 16px;
 }
 
-.clear-button {
-  padding: 8px 16px;
-  background-color: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--primary-color);
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.clear-button:hover {
-  background-color: var(--hover-color);
-}
-
 .dragons-table-container {
   overflow-x: auto;
   border-radius: 12px;
@@ -168,6 +139,7 @@
   border-collapse: collapse;
   text-align: center;
   background-color: var(--card-background);
+  min-width: 800px;
 }
 
 .dragons-table thead {
@@ -207,12 +179,6 @@
   min-width: 200px;
 }
 
-.dragon-name-with-avatar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .dragon-avatar {
   width: 40px;
   height: 40px;
@@ -241,7 +207,6 @@
   line-height: 1.2;
 }
 
-
 .avatar-icon {
   font-size: 18px;
 }
@@ -260,53 +225,8 @@
   white-space: nowrap;
 }
 
-.dragon-tier {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: 13px;
-  font-weight: 500;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.tier-essential {
-  background-color: var(--color-essential);
-  color: var(--color-essential-text);
-  border: 1px solid var(--color-essential-border);
-}
-
-.tier-elevated {
-  background-color: var(--color-elevated);
-  color: var(--color-elevated-text);
-  border: 1px solid var(--color-elevated-border);
-}
-
-.tier-extraordinary {
-  background-color: var(--color-extraordinary);
-  color: var(--color-extraordinary-text);
-  border: 1px solid var(--color-extraordinary-border);
-}
-
-.tier-exceptional {
-  background-color: var(--color-exceptional);
-  color: var(--color-exceptional-text);
-  border: 1px solid var(--color-exceptional-border);
-}
-
 .dragon-origin {
   color: var(--text-light);
-}
-
-.dragon-id-link {
-  color: var(--link-color);
-  text-decoration: none;
-  font-family: monospace;
-  font-size: 13px;
-}
-
-.dragon-id-link:hover {
-  text-decoration: underline;
 }
 
 .selected-column {
@@ -341,7 +261,7 @@
   background-color: var(--card-background);
   border: 2px solid var(--border-color);
   border-radius: 4px;
-  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease; /* SUAVE */
+  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .checkbox-container:hover input ~ .checkmark {
@@ -373,38 +293,6 @@
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
-
-@media (max-width: 768px) {
-  .dragons-table th,
-  .dragons-table td {
-    padding: 12px 8px;
-  }
-
-  .dragon-avatar {
-    width: 32px;
-    height: 32px;
-  }
-
-  .avatar-icon {
-    font-size: 16px;
-  }
-}
-
-@media (max-width: 576px) {
-  .dragons-table {
-    font-size: 13px;
-  }
-
-  .dragon-tier {
-    padding: 2px 8px;
-    font-size: 11px;
-  }
-
-  .dragon-name-with-avatar {
-    gap: 8px;
-  }
-}
-
 
 .pagination-container {
   display: flex;
@@ -451,6 +339,42 @@
   color: var(--muted-foreground, #64748b);
 }
 
+.action-buttons{
+  display: flex;
+  gap: 1px;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-text-desktop {
+  display: inline;
+}
+
+.button-text-mobile {
+  display: none;
+}
+
+.table-scroll-container {
+  position: relative;
+  overflow-x: auto;
+  width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.table-scroll-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-scroll-container::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 6px;
+}
+
 @media (min-width: 768px) {
   .pagination-container {
     flex-direction: row;
@@ -462,7 +386,129 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .dragons-table th,
+  .dragons-table td {
+    padding: 10px 6px;
+  }
+
+  .search-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dragons-container {
+    padding: 12px 16px;
+  }
+
+  .dragons-title {
+    font-size: 24px;
+  }
+
+  .dragons-subtitle {
+    font-size: 14px;
+  }
+
+  .dragon-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dragon-avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .avatar-icon {
+    font-size: 16px;
+  }
+
+  .button-text-desktop {
+    display: none;
+  }
+
+  .button-text-mobile {
+    display: inline;
+  }
+
+  .dragons-table th,
+  .dragons-table td {
+    padding: 12px 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .pagination-container {
+    margin-top: 1rem;
+  }
+
+  .pagination-numbers .pagination-button:not(.active) {
+    display: none;
+  }
+
+  .pagination-numbers .pagination-button.active,
+  .pagination-numbers .pagination-ellipsis {
+    display: inline-flex;
+  }
+
+  .dragons-table th,
+  .dragons-table td {
+    padding: 6px 3px;
+    font-size: 11px;
+  }
+
+  .table-scroll-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding-bottom: 5px;
+  }
+
+  .dragons-table-container {
+    position: relative;
+  }
+}
+
 @media (max-width: 480px) {
+  .dragons-header {
+    text-align: center;
+  }
+
+  .more-actions-container {
+    justify-content: center;
+  }
+
+  .dragons-table th,
+  .dragons-table td {
+    padding: 5px 2px;
+    font-size: 10px;
+  }
+
+  .dragon-avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .name-column {
+    min-width: 120px;
+  }
+
+  .dragon-name,
+  .dragon-element,
+  .dragon-origin {
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .pagination-nav-button {
     min-width: auto !important;
   }
@@ -470,11 +516,4 @@
   .pagination-nav-button .button__text {
     display: none;
   }
-}
-
-.action-buttons{
-  display: flex;
-  gap: 1px;
-  justify-content: center;
-  align-items: center;
 }
