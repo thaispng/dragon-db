@@ -1,46 +1,117 @@
-# Getting Started with Create React App
+# 🐉 Dragons-DB
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Uma aplicação web para gerenciar um catálogo de dragões, permitindo visualizar, criar, editar e excluir registros de dragões.
 
-## Available Scripts
+## 📋 Conteúdo
 
-In the project directory, you can run:
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Arquitetura e Organização](#arquitetura-e-organização)
+- [Como Iniciar](#como-iniciar)
+- [Funcionalidades](#funcionalidades)
+- [API](#api)
 
-### `npm start`
+## 🔍 Sobre o Projeto
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Dragons-DB é uma aplicação React com TypeScript que permite gerenciar uma base de dados de dragões. O sistema inclui autenticação de usuários, cadastro de dragões com imagens, listagem com paginação, e operações completas de CRUD (Criar, Ler, Atualizar e Deletar).
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 💻 Tecnologias Utilizadas
 
-### `npm test`
+- **React 19** - Biblioteca para construção de interfaces
+- **TypeScript** - Superset tipado do JavaScript
+- **React Router v7** - Roteamento da aplicação
+- **TanStack Query (React Query)** - Gerenciamento de estado e cache para requisições
+- **Axios** - Cliente HTTP para requisições à API
+- **CSS Modules** - Estilização com escopo local
+- **Lucide React** - Biblioteca de ícones
+- **Testing Library** - Framework para testes
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🏗️ Arquitetura e Organização
 
-### `npm run build`
+O projeto segue uma arquitetura baseada em componentes com separação clara de responsabilidades:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+src/
+  ├── assets/             # Recursos estáticos (imagens, estilos globais)
+  ├── components/         # Componentes reutilizáveis da UI
+  ├── context/            # Contextos React (autenticação, tema)
+  ├── features/           # Páginas da aplicação
+  ├── hooks/              # Hooks personalizados e queries
+  ├── lib/                # Utilitários e funções auxiliares
+  ├── routes/             # Configuração de rotas
+  ├── services/           # Serviços de comunicação com a API
+  ├── types/              # Definições de tipos TypeScript
+  └── utils/              # Funções utilitárias
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Principais Padrões Arquiteturais:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. **Componentes Reutilizáveis**: Componentes de UI modulares e reutilizáveis
+2. **Context API**: Gerenciamento de estado global para temas e autenticação
+3. **Custom Hooks**: Encapsulamento da lógica de negócios e requisições à API
+4. **Páginas por Funcionalidade**: Organização das páginas baseada em funcionalidades
+5. **Sistema de Tema**: Suporte a temas claro e escuro
 
-### `npm run eject`
+## 🚀 Como Iniciar
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Pré-requisitos
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Node.js (versão 16 ou superior)
+- npm ou yarn
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Instalação
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/seu-usuario/dragons-db.git
+   cd dragons-db
+   ```
 
-## Learn More
+2. Instale as dependências:
+   ```bash
+   npm install
+   # ou
+   yarn install
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3. Inicie a aplicação em modo de desenvolvimento:
+   ```bash
+   npm start
+   # ou
+   yarn start
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+4. Abra [http://localhost:3000](http://localhost:3000) no navegador para visualizar a aplicação.
+
+## ✨ Funcionalidades
+
+- **Autenticação**: Registro, login e recuperação de senha
+- **Lista de Dragões**: Visualização paginada com busca e filtragem
+- **Gerenciamento de Dragões**: Criação, edição e exclusão
+- **Tema**: Alternância entre tema claro e escuro
+- **Responsividade**: Interface adaptável a diferentes tamanhos de tela
+
+## 🔌 API
+
+O projeto utiliza uma API mockada disponível em:
+```
+http://5c4b2a47aa8ee500142b4887.mockapi.io/api/v1/dragon
+```
+
+### Estrutura de dados do Dragão:
+```typescript
+type Dragon = {
+  id: string;
+  createdAt: string;
+  name: string;
+  type: string;
+  histories: string[];
+  imageUrl: string;
+};
+```
+
+## 📄 Scripts Disponíveis
+
+- **npm start**: Inicia a aplicação em modo de desenvolvimento
+- **npm test**: Executa os testes
+- **npm run build**: Gera uma versão de produção otimizada
