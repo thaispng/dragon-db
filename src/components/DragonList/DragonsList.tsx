@@ -6,7 +6,7 @@ import { useDeleteDragonMutation } from "../../hooks/useDeleteDragonMutation"
 import "./dragons-list.css"
 import { Input } from "../Input/input"
 import { Button } from "../Button/button"
-import { ChevronLeft, ChevronRight, ImageOffIcon, Pen, TrashIcon, AlertTriangle } from "lucide-react"
+import { ChevronLeft, ChevronRight, ImageOffIcon, Pen, TrashIcon, AlertTriangle, ChevronUp, ChevronDown } from "lucide-react"
 import { DeleteModalPure } from "../DeleteModal/delete-modal-pure"
 import { useToast } from "../../components/Toast/use-toast"
 import { useNavigate } from "react-router-dom"
@@ -25,6 +25,26 @@ interface DragonsListProps {
   dragons: Dragon[]
 }
 
+type SortField = 'id' | 'name' | 'type' | 'createdAt' | null
+type SortDirection = 'asc' | 'desc'
+
+const SortIcon = ({ field, currentSortField, sortDirection }: { 
+  field: SortField, 
+  currentSortField: SortField, 
+  sortDirection: SortDirection 
+}) => {
+  const isActive = currentSortField === field;
+  
+  return (
+    <span className="sort-icon">
+      <div className="sort-icon-stack">
+        <ChevronUp size={14} className={`sort-icon-up ${isActive && sortDirection === 'asc' ? 'active' : ''}`} />
+        <ChevronDown size={14} className={`sort-icon-down ${isActive && sortDirection === 'desc' ? 'active' : ''}`} />
+      </div>
+    </span>
+  );
+};
+
 export function DragonsList({ dragons }: DragonsListProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [activeFilter, setActiveFilter] = useState<string | null>(null)
@@ -32,15 +52,26 @@ export function DragonsList({ dragons }: DragonsListProps) {
   const [currentPage, setCurrentPage] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [filteredDragons, setFilteredDragons] = useState<Dragon[]>(dragons)
+  const [sortField, setSortField] = useState<SortField>('name')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
   const itemsPerPage = 5
   const navigate = useNavigate()
   const { mutate: deleteDragon } = useDeleteDragonMutation()
   const { success, error } = useToast()
   const [showBulkDeleteModal, setShowBulkDeleteModal] = useState(false)
 
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortField(field)
+      setSortDirection('asc')
+    }
+  }
+
   useEffect(() => {
     const delay = setTimeout(() => {
-      const filtered = dragons.filter((dragon) => {
+      let filtered = dragons.filter((dragon) => {
         const matchesSearch =
           dragon.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           dragon.type.toLowerCase().includes(searchTerm.toLowerCase())
@@ -49,11 +80,38 @@ export function DragonsList({ dragons }: DragonsListProps) {
 
         return matchesSearch && matchesFilter
       })
+
+      if (sortField) {
+        filtered = [...filtered].sort((a, b) => {
+          let valueA, valueB;
+
+          if (sortField === 'id') {
+            valueA = a.id
+            valueB = b.id
+          } else if (sortField === 'name') {
+            valueA = a.name.toLowerCase()
+            valueB = b.name.toLowerCase()
+          } else if (sortField === 'type') {
+            valueA = a.type.toLowerCase()
+            valueB = b.type.toLowerCase()
+          } else if (sortField === 'createdAt') {
+            valueA = new Date(a.createdAt).getTime()
+            valueB = new Date(b.createdAt).getTime()
+          }
+
+          if (sortDirection === 'asc') {
+            return (valueA ?? '') < (valueB ?? '') ? -1 : (valueA ?? '') > (valueB ?? '') ? 1 : 0
+          } else {
+            return (valueA ?? '') > (valueB ?? '') ? -1 : (valueA ?? '') < (valueB ?? '') ? 1 : 0
+          }
+        })
+      }
+
       setFilteredDragons(filtered)
     }, 300)
 
     return () => clearTimeout(delay)
-  }, [searchTerm, activeFilter, dragons])
+  }, [searchTerm, activeFilter, dragons, sortField, sortDirection])
 
   const totalPages = Math.ceil(filteredDragons.length / itemsPerPage)
 
@@ -303,10 +361,22 @@ export function DragonsList({ dragons }: DragonsListProps) {
                   <tr>
                     <th className="selected-column"></th>
                     <th className="avatar-column"></th>
-                    <th>ID</th>
-                    <th className="name-column">NOME</th>
-                    <th>TIPO</th>
-                    <th>CRIADO EM</th>
+                    <th onClick={() => handleSort('id')} className="sortable-header">
+                      ID
+                      <SortIcon field="id" currentSortField={sortField} sortDirection={sortDirection} />
+                    </th>
+                    <th onClick={() => handleSort('name')} className="name-column sortable-header">
+                      NOME
+                      <SortIcon field="name" currentSortField={sortField} sortDirection={sortDirection} />
+                    </th>
+                    <th onClick={() => handleSort('type')} className="sortable-header">
+                      TIPO
+                      <SortIcon field="type" currentSortField={sortField} sortDirection={sortDirection} />
+                    </th>
+                    <th onClick={() => handleSort('createdAt')} className="sortable-header">
+                      CRIADO EM
+                      <SortIcon field="createdAt" currentSortField={sortField} sortDirection={sortDirection} />
+                    </th>
                     <th>HISTORIA</th>
                     <th></th>
                   </tr>
