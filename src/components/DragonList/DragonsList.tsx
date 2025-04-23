@@ -43,24 +43,23 @@ export function DragonsList({ dragons }: DragonsListProps) {
   const { success, error } = useToast();
 
   useEffect(() => {
-    setIsLoading(true);
     const delay = setTimeout(() => {
       const filtered = dragons.filter((dragon) => {
         const matchesSearch =
           dragon.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           dragon.type.toLowerCase().includes(searchTerm.toLowerCase());
-
+  
         const matchesFilter =
           !activeFilter || dragon.type.toLowerCase() === activeFilter.toLowerCase();
-
+  
         return matchesSearch && matchesFilter;
       });
       setFilteredDragons(filtered);
-      setIsLoading(false);
     }, 300);
-
+  
     return () => clearTimeout(delay);
   }, [searchTerm, activeFilter, dragons]);
+  
 
   const totalPages = Math.ceil(filteredDragons.length / itemsPerPage);
 
