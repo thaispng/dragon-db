@@ -9,7 +9,7 @@ import { useUpdateDragonMutation } from "../../hooks/useUpdateDragonMutation";
 import { useGetDragonByIdQuery } from "../../hooks/useGetDragonByIdQuery";
 import "./dragon-form.css";
 import { useToast } from "../Toast/use-toast";
-
+import { Loading } from "../Loading/Loading"; 
 interface DragonData {
   name: string;
   type: string;
@@ -37,7 +37,8 @@ export function UpdateDragonForm() {
   const { mutate, isPending } = useUpdateDragonMutation();
   const { data: dragon, isLoading } = useGetDragonByIdQuery(id || "");
 
-  const {success} = useToast();
+  const { success } = useToast();
+
   useEffect(() => {
     if (dragon) {
       setDragonData({
@@ -89,9 +90,7 @@ export function UpdateDragonForm() {
       },
       {
         onSuccess: () => {
-          success(
-            "Dragão atualizado com sucesso!"
-          );
+          success("Dragão atualizado com sucesso!");
           navigate("/dragonsListPage");
         },
       }
@@ -99,22 +98,18 @@ export function UpdateDragonForm() {
   };
 
   if (isLoading) {
-    return <p>Carregando dragão...</p>;
+    return <Loading />; 
   }
-
-  console.log('id que veio do useParams', id);
-  console.log('dragon carregado', dragon);
-  
 
   return (
     <div className="dragon-form-wrapper">
       <div className="dragon-form-header">
         <div className="dragons-header">
-        <h1 className="dragons-title">Atualizar Dragão</h1>
-        <p className="dragons-subtitle">
-        Edite os detalhes do seu dragão lendário
-        </p>
-      </div>
+          <h1 className="dragons-title">Atualizar Dragão</h1>
+          <p className="dragons-subtitle">
+            Edite os detalhes do seu dragão lendário
+          </p>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="dragon-form">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDeleteDragonMutation } from "../../hooks/useDeleteDragonMutation";
 import "./dragons-list.css";
 import { Input } from "../Input/input";
@@ -15,6 +15,7 @@ import {
 import { DeleteModalPure } from "../DeleteModal/delete-modal-pure";
 import { useToast } from "../../components/Toast/use-toast";
 import { useNavigate } from "react-router-dom";
+import { Loading } from "../Loading/Loading";
 
 interface Dragon {
   id: string;
@@ -34,21 +35,32 @@ export function DragonsList({ dragons }: DragonsListProps) {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [selectedDragons, setSelectedDragons] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [filteredDragons, setFilteredDragons] = useState<Dragon[]>(dragons);
   const itemsPerPage = 5;
   const navigate = useNavigate();
   const { mutate: deleteDragon } = useDeleteDragonMutation();
   const { success, error } = useToast();
 
-  const filteredDragons = dragons.filter((dragon) => {
-    const matchesSearch =
-      dragon.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      dragon.type.toLowerCase().includes(searchTerm.toLowerCase());
+  useEffect(() => {
+    setIsLoading(true);
+    const delay = setTimeout(() => {
+      const filtered = dragons.filter((dragon) => {
+        const matchesSearch =
+          dragon.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          dragon.type.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesFilter =
-      !activeFilter || dragon.type.toLowerCase() === activeFilter.toLowerCase();
+        const matchesFilter =
+          !activeFilter || dragon.type.toLowerCase() === activeFilter.toLowerCase();
 
-    return matchesSearch && matchesFilter;
-  });
+        return matchesSearch && matchesFilter;
+      });
+      setFilteredDragons(filtered);
+      setIsLoading(false);
+    }, 300);
+
+    return () => clearTimeout(delay);
+  }, [searchTerm, activeFilter, dragons]);
 
   const totalPages = Math.ceil(filteredDragons.length / itemsPerPage);
 
@@ -70,39 +82,47 @@ export function DragonsList({ dragons }: DragonsListProps) {
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
   const handleDeleteDragon = (id: string) => {
+    setIsLoading(true);
     deleteDragon(id, {
-      onSuccess: (data) => {
+      onSuccess: () => {
         success("Dragão excluído", `O dragão foi removido com sucesso.`);
-        if (selectedDragons.includes(id)) {
-          setSelectedDragons(
-            selectedDragons.filter((dragonId) => dragonId !== id)
-          );
-        }
+        setSelectedDragons((prev) => prev.filter((d) => d !== id));
+        setIsLoading(false);
       },
-      onError: (err) => {
-        error(
-          "Erro ao excluir",
-          "Não foi possível excluir o dragão. Tente novamente."
-        );
+      onError: () => {
+        error("Erro ao excluir", "Não foi possível excluir o dragão. Tente novamente.");
+        setIsLoading(false);
       },
     });
   };
 
+  const handleDeleteMultiple = async () => {
+    setIsLoading(true);
+    try {
+      for (const id of selectedDragons) {
+        await new Promise<void>((resolve) => {
+          deleteDragon(id, {
+            onSuccess: () => resolve(),
+            onError: () => resolve(),
+          });
+        });
+      }
+      setSelectedDragons([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const renderPageNumbers = () => {
     const pageNumbers = [];
-
     const maxVisiblePages = 5;
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
     const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
@@ -123,7 +143,6 @@ export function DragonsList({ dragons }: DragonsListProps) {
           1
         </Button>
       );
-
       if (startPage > 2) {
         pageNumbers.push(
           <span key="ellipsis-start" className="pagination-ellipsis">
@@ -155,7 +174,6 @@ export function DragonsList({ dragons }: DragonsListProps) {
           </span>
         );
       }
-
       pageNumbers.push(
         <Button
           key="last"
@@ -171,6 +189,9 @@ export function DragonsList({ dragons }: DragonsListProps) {
 
     return pageNumbers;
   };
+
+  if (isLoading) return <Loading />;
+
 
   return (
     <div className="dragons-container">
